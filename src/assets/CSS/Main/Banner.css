@@ -36,6 +36,12 @@
   opacity: 1;
   transform: translateY(0%);
 }*/
+.toLeft svg{
+  margin-top: 4px;
+}
+.toRight svg{
+  margin-top: 4px;
+}
 .toLeft,
 .toRight {
   position: absolute;

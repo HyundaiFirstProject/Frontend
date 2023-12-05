@@ -215,5 +215,5 @@
 .field{
     /* 클릭했을 때와 안했을 때, 밑줄 색*/
   --fieldBorderColor: black;
-  --fieldBorderColorActive:#1e9d82 ;
+  --fieldBorderColorActive:rgb(31, 158, 130) ;
 }

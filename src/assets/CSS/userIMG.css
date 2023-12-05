@@ -1,0 +1,23 @@
+.userimg_myPage_container{
+  width: 14rem;
+}
+.userimg_myPage{
+  width: 7.5rem;
+  height: 7.5rem;
+  margin-left: 3.25rem;
+  margin-bottom: 1rem;
+  margin-top: -1rem;
+  border-radius: 50%;
+}
+.userIcon{
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-top: 1.125rem;
+  border-radius: 50%;
+  color: rgba(0, 0, 0, 0.75);
+}
+.List_user_writer .userimg_List{
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+}

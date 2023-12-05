@@ -5,6 +5,7 @@
       "img": "https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/32E9/image/BA2Qyx3O2oTyEOsXe2ZtE8cRqGk.JPG",
       "title" : "털실과 코튼: 강아지와 고양이의 귀여움 대결",
       "type" :"강아지🐶",
+      "date" :"2022/10/23",
       "likes" : 25
     },
     {
@@ -12,6 +13,7 @@
       "img": "https://i.pinimg.com/originals/98/29/c9/9829c9876645beb61cef8ac0ed15d36d.jpg",
       "title" : "귀여움이 가득한 순간들",
       "type" :"고양이😺",
+      "date" :"2022/10/23",
       "likes" : 11
     },
     {
@@ -19,6 +21,7 @@
       "img": "https://i.pinimg.com/474x/e6/88/28/e68828706d6a2b7f9aa60b7b1d0815ee.jpg",
       "title" : "귀엽고 사랑스러운 두 발 친구들 고양이고양이고양이고양이고양이 ",
       "type" :"고양이😺",
+      "date" :"2022/10/23",
       "likes" : 8
     },
     {
@@ -26,8 +29,8 @@
       "img": "https://i.pinimg.com/1200x/d1/65/c5/d165c5096ea79a59c96bf0042a175964.jpg",
       "title" : "츄르와 놀이의 나날 ",
       "type" :"고양이😺",
+      "date" :"2022/10/23",
       "likes" : 6
     }
-    
   ]
 }
