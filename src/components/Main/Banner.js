@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "assets/CSS/Main/Banner.css";
 //import truncateText from "utils/truncateText.js";
+import { FaAngleLeft } from "react-icons/fa6";
+import { FaAngleRight } from "react-icons/fa6";
 const Banner = ({ props }) => {
   const [currentBanner, setCurrentBanner] = useState(0);
 
@@ -18,7 +20,7 @@ const Banner = ({ props }) => {
   return (
     <div className="banner-container">
       <button className="toLeft" onClick={previousBanner}>
-        &lt;
+        <FaAngleLeft />
       </button>
       <div className="banner" style={bannerStyle}>
         {props.map((banner, index) => (
@@ -34,7 +36,7 @@ const Banner = ({ props }) => {
         ))}
       </div>
       <button className="toRight" onClick={nextBanner}>
-        &gt;
+        <FaAngleRight />
       </button>
     </div>
   );

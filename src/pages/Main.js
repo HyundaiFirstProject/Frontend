@@ -6,10 +6,11 @@ import dummy2 from "assets/dummyForTest/dummy_mainList.json";
 import Header from "components/header/Header.js";
 import Footer from "components/footer/Footer.js";
 import "assets/CSS/Main/Main.css";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Main = () => {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
+  window.scrollTo({ top: 0, behavior: "auto" });
   return (
     <>
       <Header />
@@ -37,14 +38,19 @@ const Main = () => {
           <div className="mainTag">
             <p>이런 후기 찾고 있나요?</p>
             <p className="smallP">다른 집사님들의 선택!</p>
-            <button>더보기</button>
+            <button onClick={() => navigate("/list-review/1")}>더보기</button>
           </div>
           <MainList props={dummy2.item} />
         </div>
         <div className="mainList">
           <div className="mainTag">
             <p>귀여운 반려동물과의 삶💖</p>
-            <button className="moreButton">더보기</button>
+            <button
+              className="moreButton"
+              onClick={() => navigate("/list-pets/1")}
+            >
+              더보기
+            </button>
           </div>
           <MainList props={dummy2.item} />
         </div>

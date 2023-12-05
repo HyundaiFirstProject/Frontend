@@ -1,6 +1,6 @@
 .Footer{
   height: 15rem;
-  width: 99.0vw;
+  width: 99.9vw;
   margin-left:-0.6rem;
   margin-bottom: -0.5rem;
   background-color: rgb(246, 246, 246);
@@ -33,7 +33,7 @@
   display: flex;
   flex-direction: row;
 }
-.Git_Email a, p{
+.FooterDeveopler .Git_Email a, p{
   line-height: 0.85rem;
   text-decoration: none;
 }
@@ -45,7 +45,8 @@
 .FooterDiv .FotterLine{
   width: 0.1px;
   height: 8rem;
-  padding-top: 3.75rem;
+  padding-top: 3.75rem;    
+  /* margin: auto; */
   border: 0.1px solid rgba(200, 200, 200, 0.45 );
 }
 
