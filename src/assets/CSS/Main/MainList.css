@@ -1,6 +1,6 @@
 .list-container {
   display: flex; /* 요소들을 가로로 나열 */
-  width: 55rem;
+  width: 56rem;
   margin: auto;
   overflow-x: hidden; 
   justify-content: center;

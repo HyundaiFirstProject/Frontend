@@ -9,7 +9,8 @@ import SignUp from "pages/SignUp";
 import Mypage from "pages/Mypage";
 import PostPets from "pages/PostPets";
 import PostReview from "pages/PostReview";
-const App = () => {
+import UploadPets from "pages/UploadPets";
+const Routing = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -25,6 +26,9 @@ const App = () => {
           path="/list-review/:pageNumber/:postID"
           element={<PostReview />}
         ></Route>
+        <Route path="/uploadPets" element={<UploadPets />}></Route>
+        <Route path="/uploadPets/:postID" element={<UploadPets />}></Route>
+        {/* 수정용 라우팅 */}
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signUp" element={<SignUp />}></Route>
         <Route path="/mypage" element={<Mypage />}></Route>
@@ -32,4 +36,4 @@ const App = () => {
     </BrowserRouter>
   );
 };
-export default App;
+export default Routing;
