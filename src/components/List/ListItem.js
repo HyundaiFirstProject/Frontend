@@ -1,5 +1,5 @@
 import "assets/CSS/List/ListItem.css";
-import UserIMG from "components/userIMG.js";
+import UserIMG from "components/UserProfile/userIMG.js";
 import truncateText from "utils/truncateText.js";
 import { GoHeart } from "react-icons/go";
 import { FaRegEye } from "react-icons/fa6";

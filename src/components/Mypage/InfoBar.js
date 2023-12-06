@@ -1,6 +1,6 @@
 import { PiHeartThin } from "react-icons/pi";
 import { PiBookmarkSimpleThin } from "react-icons/pi";
-import UserIMG from "components/userIMG.js";
+import UserIMG from "components/UserProfile/userIMG.js";
 import "assets/CSS/Mypage/Mypage.css";
 const InfoBar = () => {
   const user = {
@@ -8,9 +8,9 @@ const InfoBar = () => {
     nickname: "닉네임",
     user_like_pets_num: 0,
     user_like_review_num: 0,
-    img_url: "false",
-    // img_url:
-    //   "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
+    //img_url: "false",
+    img_url:
+      "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
   };
   return (
     <div className="Mypage_Left">
