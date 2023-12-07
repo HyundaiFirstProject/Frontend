@@ -1,4 +1,4 @@
-import MyPageListItem from "./MyPageListItem.js";
+import MyPageListItem from "./MyPageListItem";
 import "assets/CSS/Mypage/MypageList.css";
 const MyPageList = ({ props }) => {
   return (

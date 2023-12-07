@@ -1,8 +1,8 @@
 import "assets/CSS/Mypage/Mypage.css";
-import Header from "components/header/Header.js";
-import Footer from "components/footer/Footer.js";
-import InfoBar from "components/Mypage/InfoBar.js";
-import MypageNavBar from "components/Mypage/MypageNav.js";
+import Header from "components/header/Header";
+import Footer from "components/footer/Footer";
+import InfoBar from "components/Mypage/InfoBar";
+import MypageNavBar from "components/Mypage/MypageNav";
 const Mypage = () => {
   return (
     <div>

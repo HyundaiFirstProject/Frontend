@@ -1,7 +1,7 @@
 import React from "react";
 import "assets/CSS/Main/MainList.css";
 //import { GoHeartFill } from "react-icons/go";
-import truncateText from "utils/truncateText.js";
+import truncateText from "utils/truncateText";
 import { IoHeart } from "react-icons/io5";
 const MainList = ({ props }) => {
   return (

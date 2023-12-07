@@ -1,16 +1,17 @@
 import usePost from "hooks/axiosWithCredentials/usePost";
 import serverURL from "store/Server/ServerURL";
-const EmailSend = (props) => {
+const EmailSend = (email, randNum) => {
   const { postWithCredentials } = usePost();
   const url = serverURL();
-  const useEmail = { email: props };
+  const emailSendBody = { email: email, emailNum: parseInt(randNum) };
+  console.log(emailSendBody);
   //return true;
   const emailSend = async () => {
-    console.log(`${url}/api/emailAuthorization`, useEmail);
+    console.log(`${url}/api/sendEmail`, emailSendBody);
     try {
       const res = await postWithCredentials(
-        `${url}/api/emailAuthorization/`,
-        useEmail
+        `${url}/api/sendEmail/`,
+        emailSendBody
       );
       console.log(res); // 응답 데이터 사용
       if (res.status === 200) {

@@ -1,6 +1,6 @@
 import { PiHeartThin } from "react-icons/pi";
 import { PiBookmarkSimpleThin } from "react-icons/pi";
-import UserIMG from "components/UserProfile/userIMG.js";
+import UserIMG from "components/UserProfile/userIMG";
 import "assets/CSS/Mypage/Mypage.css";
 const InfoBar = () => {
   const user = {

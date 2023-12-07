@@ -1,10 +1,10 @@
 import React from "react";
-import Banner from "components/Main/Banner.js";
-import MainList from "components/Main/MainList.js";
+import Banner from "components/Main/Banner";
+import MainList from "components/Main/MainList";
 import dummy from "assets/dummyForTest/dummy_main.json";
 import dummy2 from "assets/dummyForTest/dummy_mainList.json";
-import Header from "components/header/Header.js";
-import Footer from "components/footer/Footer.js";
+import Header from "components/header/Header";
+import Footer from "components/footer/Footer";
 import "assets/CSS/Main/Main.css";
 import { useNavigate } from "react-router-dom";
 

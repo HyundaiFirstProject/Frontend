@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "assets/CSS/Header.css";
 import { IoIosSearch } from "react-icons/io";
 import { FaAngleDown } from "react-icons/fa6";
-import UserIMG from "components/UserProfile/userIMG.js";
+import UserIMG from "components/UserProfile/userIMG";
 import React, { useState } from "react";
 const Header = () => {
   const navigate = useNavigate();
@@ -17,9 +17,9 @@ const Header = () => {
 
   const user = {
     no: 1,
-    //img_url: "false",
-    img_url:
-      "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
+    img_url: "false",
+    //img_url:
+    //"https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
   };
   const isLog = false;
 

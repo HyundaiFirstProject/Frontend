@@ -9,6 +9,7 @@ import pwConfirm from "utils/signUpUtils/pwConfirm";
 import NicknameConfirm from "utils/signUpUtils/NicknameConfirm";
 import EmailConfirm from "utils/signUpUtils/EmailConfirm";
 import EmailSend from "utils/signUpUtils/EmailSend";
+import AlertModal from "components/Modal/AlertModal";
 const SignUp = () => {
   const navigate = useNavigate();
   const { postWithCredentials } = usePost();
@@ -18,19 +19,15 @@ const SignUp = () => {
     email: "",
     password: "",
   });
+  const [modal, setModal] = useState("close");
+  const [randNum, setRandNum] = useState(0);
   const [confirmPW, setConfirmPW] = useState("");
-  const [sendEmail, setSendEmail] = useState(false);
-  const [emailAutho, setEmailAutho] = useState("");
+  const [emailAuthoNum, setEmailAuthoNum] = useState("");
   const [status, setStatus] = useState({
-    nickname: false,
-    nickname_try_checked: false,
-    email: false,
-    email_try_checked: false,
-    email_btn_checked: false,
-    password: false,
-    password_confirm: false,
-    password_confirm_try_checked: false,
-    emailAutho: false,
+    nickname: "before",
+    email: "before",
+    password: "before",
+    password_confirm: "before",
   });
   const nicknameInputRef = useRef(null);
   const emailInputRef = useRef(null);
@@ -45,31 +42,45 @@ const SignUp = () => {
   const handleNicknameConfirm = (e) => {
     e.preventDefault();
     const nicknamePossible = NicknameConfirm(userInfo.nickname);
-    setStatus((pre) => ({
-      ...pre,
-      nickname_try_checked: true,
-      nickname: nicknamePossible,
-    }));
+    if (nicknamePossible)
+      setStatus((pre) => ({
+        ...pre,
+
+        nickname: "가능",
+      }));
+    else
+      setStatus((pre) => ({
+        ...pre,
+
+        nickname: "중복",
+      }));
   };
   const handleEmailConfirm = (e) => {
     e.preventDefault();
-    if (status.emailAutho === false) {
-      const isNotDup = EmailConfirm(userInfo.email);
+    const isNotDup = EmailConfirm(userInfo.email); //중복 확인
+    if (status.email !== "인증번호O") {
       if (isNotDup) {
-        setSendEmail(true);
-      }
-      setStatus((prev) => ({ ...prev, email_btn_checked: true }));
-    } else {
-      console.log("이미 인증을 완료한 이메일입니다.");
-      //모달창 띄우기
-    }
+        const rand = Math.floor(100000 + Math.random() * 900000);
+        setRandNum(rand);
+        const isSended = EmailSend(userInfo.email, rand);
+        if (isSended) {
+          setStatus((prev) => ({ ...prev, email: "전송완료" }));
+          setModal("이메일 전송에 성공하였습니다. 인증번호를 입력해주세요.");
+        } else setModal("이메일 전송에 실패하였습니다. 다시 시도해주세요.");
+      } else setModal("이미 가입된 이메일입니다.");
+    } else setModal("이미 인증을 완료하셨습니다.");
   };
 
+  const onClose = () => {
+    setModal("close");
+  };
   const handleEmailAuthoConfirm = (e) => {
     e.preventDefault();
-    const emailAuthoStatus = EmailSend(userInfo.email);
-    if (emailAuthoStatus) setStatus((prev) => ({ ...prev, emailAutho: true }));
-    console.log(emailAuthoStatus, status.emailAutho);
+    if (parseInt(emailAuthoNum) === randNum) {
+      setStatus((prev) => ({ ...prev, email: "인증번호O" }));
+    } else {
+      setStatus((prev) => ({ ...prev, email: "인증번호X" }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -97,10 +108,10 @@ const SignUp = () => {
     <div className="container_Login">
       <div className="LogIn_Name_su">프로젝트 네임</div>
       <form className="input_SU" onSubmit={handleSubmit}>
-        {status.nickname === true && status.nickname_try_checked === true && (
+        {status.nickname === "가능" && (
           <p className="alertWrong">사용 가능한 닉네임입니다.</p>
         )}
-        {status.nickname === false && status.nickname_try_checked === true && (
+        {status.nickname === "불가" && (
           <p className="alertWrong">사용 불가한 닉네임입니다.</p>
         )}
         <InputCSS
@@ -109,11 +120,7 @@ const SignUp = () => {
           type="text"
           ref={nicknameInputRef}
           value={userInfo.nickname}
-          disabled={
-            status.nickname === true && status.nickname_try_checked === true
-              ? true
-              : false
-          }
+          disabled={status.nickname !== "가능" ? false : true}
           onChange={(e) => {
             setUserInfo((prev) => ({ ...prev, nickname: e.target.value }));
           }}
@@ -121,14 +128,8 @@ const SignUp = () => {
         <button className="confirmBTN" onClick={handleNicknameConfirm}>
           확인
         </button>
-        {status.email === false && status.email_try_checked === true && (
+        {status.email === "불가" && (
           <p className="alertWrong">이메일 형식이 올바르지 않습니다.</p>
-        )}
-        {sendEmail === true && (
-          <p className="alertWrong">사용 가능한 이메일입니다.</p>
-        )}
-        {sendEmail === false && status.email_btn_checked === true && (
-          <p className="alertWrong">사용 불가능한 이메일입니다.</p>
         )}
         <InputCSS
           name="이메일"
@@ -136,25 +137,23 @@ const SignUp = () => {
           type="text"
           ref={emailInputRef}
           value={userInfo.email}
-          disabled={sendEmail ? true : false}
+          disabled={status.email === "인증번호O" ? true : false}
           onChange={(e) => {
             setUserInfo((prev) => ({ ...prev, email: e.target.value }));
             setStatus((pre) => ({
               ...pre,
-              email_btn_checked: false,
-              email_try_checked: true,
               email: emailCheck(e.target.value),
             }));
           }}
         />
         <button
           disabled={
-            status.email === true && status.email_try_checked === true
+            status.email === "가능" || status.email === "전송완료"
               ? false
               : true
           }
           className={
-            status.email === true && status.email_try_checked === true
+            status.email === "가능" || status.email === "전송완료"
               ? "confirmBTN_email"
               : "confirmBTN_email_dis"
           }
@@ -162,26 +161,40 @@ const SignUp = () => {
         >
           확인
         </button>
-        {status.emailAutho === true && (
+        {status.email === "인증번호O" && (
           <p className="alertWrong">인증되었습니다</p>
         )}
         <InputCSS
-          name="이메일 인증"
+          name="인증번호"
           tag="emailCheck"
           type="text"
           ref={emailCheckInputRef}
-          value={emailAutho}
-          disabled={status.emailAutho ? true : false}
+          value={emailAuthoNum}
+          disabled={
+            status.email !== "전송완료"
+              ? true
+              : status.email === "인증번호O"
+              ? true
+              : false
+          }
           onChange={(e) => {
-            setEmailAutho(e.target.value);
+            setEmailAuthoNum(e.target.value);
           }}
         />
         <button
-          disabled={sendEmail ? false : true}
+          disabled={
+            status.email !== "전송완료"
+              ? true
+              : status.email === "인증번호O"
+              ? true
+              : false
+          }
           className={
-            sendEmail === true
-              ? "confirmBTN_email_autho"
-              : "confirmBTN_email_dis_autho"
+            status.email !== "전송완료"
+              ? "confirmBTN_email_dis_autho"
+              : status.email === "인증번호O"
+              ? "confirmBTN_email_dis_autho"
+              : "confirmBTN_email_autho"
           }
           onClick={handleEmailAuthoConfirm}
         >
@@ -197,13 +210,15 @@ const SignUp = () => {
           disabled={false}
           onChange={(e) => {
             setUserInfo((prev) => ({ ...prev, password: e.target.value }));
-            setStatus((pre) => ({ ...pre, password: true }));
+            setStatus((pre) => ({
+              ...pre,
+              password: pwConfirm(e.target.value, confirmPW),
+            }));
           }}
         />
-        {status.password_confirm === false &&
-          status.password_confirm_try_checked === true && (
-            <p className="alertWrong">비밀번호와 일치하지 않습니다</p>
-          )}
+        {status.password_confirm === false && status.password === false && (
+          <p className="alertWrong">비밀번호와 일치하지 않습니다</p>
+        )}
         <InputCSS
           name="비밀번호 확인"
           tag="PW_confirm"
@@ -216,17 +231,26 @@ const SignUp = () => {
             setStatus((pre) => ({
               ...pre,
               password_confirm: pwConfirm(userInfo.password, e.target.value),
-              password_confirm_try_checked: true,
             }));
           }}
         />
         <button
           className="LogInBTN"
-          disabled={Object.values(status).includes(false) ? true : false}
+          disabled={
+            status.nickname === "가능" &&
+            status.email === "인증번호O" &&
+            ((status.password === true && status.password_confirm === false) ||
+              (status.password === false && status.password_confirm === true))
+              ? false
+              : true
+          }
         >
           회원가입
         </button>
       </form>
+      {modal !== "close" && (
+        <AlertModal alertString={modal} onClose={onClose} />
+      )}
     </div>
   );
 };

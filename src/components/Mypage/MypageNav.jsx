@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "assets/CSS/Mypage/Mypage.css";
 import dummy from "assets/dummyForTest/dummy_mainList_long.json";
 import dummy_short from "assets/dummyForTest/dummy_mainList.json";
-import MyPageList from "./MyPageList.js";
+import MyPageList from "./MyPageList";
 const MypageNavBar = () => {
   const [mypageState, setMypageState] = useState("first");
   return (

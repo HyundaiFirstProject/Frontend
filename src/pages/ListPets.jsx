@@ -1,11 +1,11 @@
 import React from "react";
 import ListLayout from "components/List/ListLayout";
-import dummy from "assets/dummyForTest/dummy_review.json";
-import Header from "components/header/Header.js";
-import Footer from "components/footer/Footer.js";
-import Paging from "components/Paging/Paging.js";
+import dummy from "assets/dummyForTest/dummy_mainList_long.json";
+import Header from "components/header/Header";
+import Footer from "components/footer/Footer";
+import Paging from "components/Paging/Paging";
 import "assets/CSS/List/List.css";
-const ListReview = () => {
+const ListPets = () => {
   //const page = 12;
   //const url = window.location.href;
   //const currentPage = url.match(/\d+$/)[0];
@@ -23,4 +23,4 @@ const ListReview = () => {
     </div>
   );
 };
-export default ListReview;
+export default ListPets;

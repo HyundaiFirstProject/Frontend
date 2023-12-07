@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import React, { useState } from "react";
-import Header from "components/header/Header.js";
-import Footer from "components/footer/Footer.js";
+import Header from "components/header/Header";
+import Footer from "components/footer/Footer";
 import "assets/CSS/Upload/Upload_De.css";
 const UploadPets = ({ props }) => {
   const location = useLocation();
