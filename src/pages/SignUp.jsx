@@ -7,7 +7,7 @@ import InputCSS from "components/SignUp/InputCSS";
 import emailCheck from "utils/signUpUtils/emailCheck";
 import pwConfirm from "utils/signUpUtils/pwConfirm";
 import NicknameConfirm from "utils/signUpUtils/NicknameConfirm";
-import EmailConfirm from "utils/signUpUtils/EmailConfirm";
+//import EmailConfirm from "utils/signUpUtils/EmailConfirm";
 import EmailSend from "utils/signUpUtils/EmailSend";
 import AlertModal from "components/Modal/AlertModal";
 const SignUp = () => {
@@ -26,7 +26,6 @@ const SignUp = () => {
   const [status, setStatus] = useState({
     nickname: "before",
     email: "before",
-    password: "before",
     password_confirm: "before",
   });
   const nicknameInputRef = useRef(null);
@@ -39,41 +38,42 @@ const SignUp = () => {
     localStorage.clear();
   }, []); //회원가입 페이지 들어오면 로그인 무조건 해제
 
-  const handleNicknameConfirm = (e) => {
+  const handleNicknameConfirm = async (e) => {
     e.preventDefault();
-    const nicknamePossible = NicknameConfirm(userInfo.nickname);
-    if (nicknamePossible)
-      setStatus((pre) => ({
-        ...pre,
-
-        nickname: "가능",
-      }));
-    else
-      setStatus((pre) => ({
-        ...pre,
-
-        nickname: "중복",
-      }));
+    try {
+      const nicknamePossible = await NicknameConfirm(userInfo.nickname);
+      if (nicknamePossible) setStatus((pre) => ({ ...pre, nickname: "가능" }));
+      else setStatus((pre) => ({ ...pre, nickname: "중복" }));
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const handleEmailConfirm = (e) => {
+  const handleEmailConfirm = async (e) => {
     e.preventDefault();
-    const isNotDup = EmailConfirm(userInfo.email); //중복 확인
+    const isNotDup = true;
+    //EmailConfirm(userInfo.email); //중복 확인
+
     if (status.email !== "인증번호O") {
       if (isNotDup) {
         const rand = Math.floor(100000 + Math.random() * 900000);
         setRandNum(rand);
-        const isSended = EmailSend(userInfo.email, rand);
-        if (isSended) {
-          setStatus((prev) => ({ ...prev, email: "전송완료" }));
-          setModal("이메일 전송에 성공하였습니다. 인증번호를 입력해주세요.");
-        } else setModal("이메일 전송에 실패하였습니다. 다시 시도해주세요.");
+        try {
+          const isSended = await EmailSend(userInfo.email, rand);
+          if (isSended) {
+            setStatus((prev) => ({ ...prev, email: "전송완료" }));
+            setModal("이메일 전송에 성공하였습니다. 인증번호를 입력해주세요.");
+          } else setModal("이메일 전송에 실패하였습니다. 다시 시도해주세요.");
+        } catch (error) {
+          console.error("Error sending email:", error);
+          setModal("이메일 전송 중 오류가 발생했습니다.");
+        }
       } else setModal("이미 가입된 이메일입니다.");
     } else setModal("이미 인증을 완료하셨습니다.");
   };
 
-  const onClose = () => {
-    setModal("close");
-  };
+  // const onClose = () => {
+  //   setModal("close");
+  // };
   const handleEmailAuthoConfirm = (e) => {
     e.preventDefault();
     if (parseInt(emailAuthoNum) === randNum) {
@@ -87,14 +87,11 @@ const SignUp = () => {
     e.preventDefault();
     trySignUp();
   };
-
   const trySignUp = async () => {
-    console.log(`${url}/api/signup/`, userInfo, confirmPW);
     try {
-      const res = await postWithCredentials(`${url}/api/signup/`, userInfo);
+      const res = await postWithCredentials(`/api/signup/`, userInfo);
       console.log(res); // 응답 데이터 사용
-      if (res.status === 200) {
-        //회원가입이 완료되었습니다 모달창
+      if (res.status === "200") {
         navigate("/login");
       } else {
         //모달 창 띄우기
@@ -111,7 +108,7 @@ const SignUp = () => {
         {status.nickname === "가능" && (
           <p className="alertWrong">사용 가능한 닉네임입니다.</p>
         )}
-        {status.nickname === "불가" && (
+        {status.nickname === "중복" && (
           <p className="alertWrong">사용 불가한 닉네임입니다.</p>
         )}
         <InputCSS
@@ -210,15 +207,12 @@ const SignUp = () => {
           disabled={false}
           onChange={(e) => {
             setUserInfo((prev) => ({ ...prev, password: e.target.value }));
-            setStatus((pre) => ({
-              ...pre,
-              password: pwConfirm(e.target.value, confirmPW),
-            }));
           }}
         />
-        {status.password_confirm === false && status.password === false && (
-          <p className="alertWrong">비밀번호와 일치하지 않습니다</p>
-        )}
+        {status.password_confirm !== "before" &&
+          !pwConfirm(userInfo.password, confirmPW) && (
+            <p className="alertWrong">비밀번호와 일치하지 않습니다</p>
+          )}
         <InputCSS
           name="비밀번호 확인"
           tag="PW_confirm"
@@ -237,10 +231,11 @@ const SignUp = () => {
         <button
           className="LogInBTN"
           disabled={
+            userInfo.password !== "" &&
+            confirmPW !== "" &&
             status.nickname === "가능" &&
             status.email === "인증번호O" &&
-            ((status.password === true && status.password_confirm === false) ||
-              (status.password === false && status.password_confirm === true))
+            userInfo.password === confirmPW
               ? false
               : true
           }
@@ -249,7 +244,7 @@ const SignUp = () => {
         </button>
       </form>
       {modal !== "close" && (
-        <AlertModal alertString={modal} onClose={onClose} />
+        <AlertModal alertString={modal} onClose={() => setModal("close")} />
       )}
     </div>
   );

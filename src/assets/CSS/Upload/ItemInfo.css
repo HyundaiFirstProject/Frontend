@@ -1,0 +1,79 @@
+#ItemInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 20rem;
+    margin: auto;
+}
+#handleSearchItem{
+  width: 20rem;
+  height:2.5rem;
+  margin: auto;
+  outline: none;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: -1.7rem;
+}
+
+#handleSearchItem input{    
+  border-radius: 0.25rem;
+  outline: none;
+  border: 0.1px solid lightgrey;
+  padding-left: 1rem;
+    width: 18.8rem;
+  height: 2.5rem;
+}
+#ShowItems{
+  position: absolute;
+  max-height: 15rem;
+  top: 4.6rem;
+  width: 20rem;
+  z-index: 5;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+#ShowItemsETC {
+  margin-top: 4.55rem;
+  position: absolute;
+}
+#ShowItems button{
+  width: 100%;
+  height: 3rem;
+}
+#ShowItems img{
+  position: absolute;
+  height: 2.5rem;
+  left: 0.25rem;
+  width: 2.5rem;
+  margin-top: -0.8rem;
+  object-fit: cover;
+  border-radius: 0.25rem;
+}
+#ShowItems p{
+  padding: 0;
+    margin: 0;
+    width: 15rem;
+    margin-left: 3rem;
+}
+#checkedItem{
+  background-color: grey;
+}
+#etcICON{
+  position: absolute;
+  height: 2.5rem;
+  left: 0.25rem;
+  width: 2.5rem;
+  margin-top: -0.8rem;
+  object-fit: cover;
+  border-radius: 0.25rem;
+
+}
+#ShowItems input{
+  width: 0;
+  visibility: hidden;
+}
+#HideItems{
+  visibility: hidden;
+  height: 0;
+}

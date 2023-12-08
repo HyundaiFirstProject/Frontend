@@ -34,7 +34,7 @@ const MypageNavBar = () => {
         </button>
       </div>
       {mypageState === "first" && <MyPageList props={dummy} />}
-      {mypageState === "second" && <MyPageList props={dummy_short} />}
+      {mypageState === "second" && <MyPageList props={dummy} />}
       {mypageState === "third" && <MyPageList props={dummy} />}
       {mypageState === "fourth" && <MyPageList props={dummy_short} />}
     </div>

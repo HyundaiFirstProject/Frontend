@@ -3,7 +3,6 @@
   flex-direction: row;
   height: 5rem;
   width: 99.8vw;
-  margin: q;
   position: fixed;
   top:0;
   border-bottom: 0.5px solid rgba(211, 211, 211, 0.5);
@@ -22,6 +21,9 @@
 .Logo_Header{
   margin-left: -3rem;
 }
+.LogoIMG{
+  height: 100%;
+}
 .Logo_Header button{
   font-size: 2rem;
   width: 11rem;
@@ -29,12 +31,14 @@
   margin-top: 0.5rem;
   margin-right: -1rem;
 }
-.toList{
-  width: 5rem;
+.header .toList{
+  width: 80px;
   height: 4rem;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
+  min-width: 80px; /* 최소 너비 설정 */
+  max-width: 80px; /* 최대 너비 설정 */
 }
-.toList:hover{
+.header button:hover{
   color:rgba(30, 159, 131);
   font-weight: 800;
 }
@@ -94,6 +98,9 @@
 }
 .header .writeBTN:hover{
   background-color: #1e9d82;
+  font-size: 0.65rem;
+  color:white;
+  font-weight: 200;
 }
 .header .writeBTN svg{
   margin-left: 0.25rem;
@@ -157,6 +164,8 @@
 }
 .header .dropdown-content button:hover{
   background-color: rgba(211, 211, 211, 0.15);
+  color:inherit;
+  font-weight: inherit;
 }
 .SearchLabel input{
   border:none;
@@ -174,4 +183,52 @@ input {
 }
 ::-webkit-input-placeholder {
   font-family: 'Orbit-Regular', sans-serif;
+}
+
+
+.header_up {
+  display: flex;
+  flex-direction: row;
+  height: 5rem;
+  width: 99.8vw;
+  position: fixed;
+  justify-content: center;
+  top: 0;
+  border-bottom: 0.5px solid rgba(211, 211, 211, 0.5);
+  z-index: 100;
+  background-color: white;
+  justify-content: center;
+}
+.header_up .Logo_Header{
+  right: 21.01rem;
+  position: relative;
+}
+.header_up .Logo_Header button{
+  background-color: #ffffff00;
+  border: none;
+  width: 11rem;;
+}
+.header_up .Logo_Header .LogoIMG{
+  height: 100%;
+}
+.toUpload{
+  position: relative;
+  left: 21rem;
+  width: 4rem;
+  height: 2.2rem;
+  border-radius: 0.25rem;
+  margin-top: 1.45rem;
+  border: none;
+  color:white;
+  background-color: rgba(30, 159, 131, 0.75);
+  margin-left: 0.5rem;
+  font-size: 0.65rem;
+  justify-content: center;
+  line-height: 2rem;
+}
+.toUpload:disabled{
+
+  color:white;
+  background-color: rgba(0, 0, 0, 0.15);
+
 }

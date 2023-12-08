@@ -1,20 +1,47 @@
 .userimg_myPage_container{
   width: 14rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.userimg_myPage_container svg{
+  color: rgba(30,157,130,0.5);
+  margin-top: 0.6rem;
+  height: 91%;
+  width: 97%;
+  border-radius: 50%
 }
 .userimg_myPage{
-  width: 7.5rem;
-  height: 7.5rem;
-  margin-left: 3.25rem;
-  margin-bottom: 1rem;
-  margin-top: -1rem;
-  border-radius: 50%;
+  align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 7.5rem;
+    height: 7.5rem;
+    margin-top: -1rem;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.114);
+}
+.userimg_myPage img{
+  padding: 1rem;
+    background-color: white;
 }
 .userIcon{
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-top: 1.125rem;
-  border-radius: 50%;
-  color: rgba(0, 0, 0, 0.75);
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-top: 0.2rem;
+  border-radius: 0.25rem;
+  background-color: rgba(0, 0, 0, 0.114);
+  color: rgba(30,157,130,0.5);
+}
+.userIcon svg{
+  width: 1.75rem;
+  height: 1.75rem;
+  padding-bottom: 0.9rem;
+
+}
+.userIcon img{
+  margin-bottom: 2rem;
+  margin-top: 0;
 }
 .List_user_writer .userimg_List{
   width: 1.25rem;

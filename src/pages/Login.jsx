@@ -26,7 +26,7 @@ const Login = () => {
   const tryLogin = async () => {
     console.log(`${url}/api/login/`, userInfo);
     try {
-      const res = await postWithCredentials(`${url}/api/login/`, userInfo);
+      const res = await postWithCredentials(`${url}/api/login`, userInfo);
       console.log(res); // 응답 데이터 사용
       if (res.status === 200) {
         localStorage.setItem("isLog", true);
@@ -74,6 +74,7 @@ const Login = () => {
           >
             비밀번호 재설정
           </button>
+          <p>|</p>
           <button
             className="goToSignUp"
             onClick={() => {

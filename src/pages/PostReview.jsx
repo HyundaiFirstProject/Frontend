@@ -1,4 +1,6 @@
-const PostReview = () => {
-  return <div>fs</div>;
-};
+import React from "react";
+function PostReview() {
+  return <div></div>;
+}
+
 export default PostReview;

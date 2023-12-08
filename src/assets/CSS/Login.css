@@ -75,28 +75,28 @@
 .bottomBTN button{
   position: relative;
   text-align: center;
-  border-top-color:#00000000;;
-  border-left-color:#00000000;
-  border-right-color:#00000000;
-  border-bottom: 1px solid black;
   color: black;
   background-color:#00000000;
+  border:none;
   font-family: 'Orbit-Regular', sans-serif;
+}
+.bottomBTN p{
+  top: 0.25rem;
+  margin: 0;
+  position: relative;
+  left: 6rem;
 }
 .bottomBTN button:hover {
   color: #1e9d82;
-  border-top-color:rgba(0, 0, 0, 0);
-  border-left-color:rgba(0, 0, 0, 0);
-  border-right-color:rgba(0, 0, 0, 0);
-  border-bottom: 1px solid #1e9d82;
 }
 .goToSignUp{
   position: relative;
-  right: -2.25rem;
+  border:none;
+  right: -6rem;
 }
-.goToNewPW{
+.bottomBTN .goToNewPW{
   position: relative;
-  left: -2rem;
+  right: -6rem;
 }
  .ha-screen-reader{
   width: var(--ha-screen-reader-width, 1px);

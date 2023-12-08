@@ -3,6 +3,7 @@ import "assets/CSS/Header.css";
 import { IoIosSearch } from "react-icons/io";
 import { FaAngleDown } from "react-icons/fa6";
 import UserIMG from "components/UserProfile/userIMG";
+import Logo from "assets/images/Logo.png";
 import React, { useState } from "react";
 const Header = () => {
   const navigate = useNavigate();
@@ -22,11 +23,12 @@ const Header = () => {
     //"https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
   };
   const isLog = false;
-
   return (
-    <div className="header">
+    <div className=" header">
       <div className="Logo_Header">
-        <button onClick={() => navigate("/")}>프로젝트</button>
+        <button onClick={() => navigate("/")}>
+          <img src={Logo} alt="로고" className="LogoIMG" />
+        </button>
       </div>
       <button className="toList" onClick={() => navigate("/list-review/1")}>
         리뷰게시판
@@ -67,9 +69,17 @@ const Header = () => {
                 showDropdown ? "dropdown-content" : "dropdown-invisible"
               }
             >
-              <button>🐾후기 게시판</button>
               <button
-                onClick={() => navigate("/uploadPets", { state: "upload" })}
+                onClick={() =>
+                  navigate("/upload/review", { state: "upload-review" })
+                }
+              >
+                🐾후기 게시판
+              </button>
+              <button
+                onClick={() =>
+                  navigate("/upload/pets", { state: "upload-pets" })
+                }
               >
                 자랑 게시판
               </button>
