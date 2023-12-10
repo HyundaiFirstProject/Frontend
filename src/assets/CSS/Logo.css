@@ -1,0 +1,39 @@
+@font-face {
+  font-family: 'Happiness-Sans-Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/Happiness-Sans-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+.asd{
+  height: 10rem;
+}
+.Logo{
+  font-family: 'Happiness-Sans-Bold', sans-serif;
+  display: flex;
+  flex-direction: row;
+}
+.MainLogo{  display: flex;
+  flex-direction: row;
+  font-size: 6rem;
+}
+.MainLogo1{
+  font-size: 5rem;
+
+}
+.MainLogo2{
+  font-size: 6rem;
+  letter-spacing: -13px;
+  line-height: 1.1;
+
+}
+.SUBLogo{
+  margin-top: 1rem;
+    font-size: 1.75rem;
+    margin-left: 1rem;
+}
+.SUBLogo p{
+  margin: 0;
+  padding-top: 0.5rem;
+  color:#1e9d82;
+  color:#ca7700;
+}

@@ -14,28 +14,7 @@
 }
 .banner a {
   flex: 1 0 100%; /* 배너 이미지들이 가로로 균일하게 분할되도록 추가 */
-}/*
-.banner p{
-  padding-top: 19rem;
-  padding-left: 1rem;
-  position: fixed;
-  white-space: normal;
-  word-wrap: break-word; 
-  width:85%;
-  height: 20rem;
-  line-height: 1.75rem;
-  font-weight:900;
-  font-size: x-large;
-  color:black;
-  z-index: 5; 
-  opacity: 1;
-  transition: opacity 0.5s ease;
-  transition: opacity 0.5s ease, transform 0.75s ease;
 }
-.banner p.show {
-  opacity: 1;
-  transform: translateY(0%);
-}*/
 .toLeft svg{
   margin-top: 4px;
 }

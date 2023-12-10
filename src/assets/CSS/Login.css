@@ -5,6 +5,7 @@
   justify-content: center;
   margin: 0;
 }
+
 .LogIn_Name{
   margin: auto;
   font-size: 1.75rem;   
@@ -45,7 +46,7 @@
   text-align: center;
   color: white;
   background-color: black;
-  width: 15rem;
+  width: 22rem;
   height: 3rem;
   box-shadow: 2px 2px 5px 4px rgba(41, 41, 41, 0.13) inset;
   border-radius: 0.15rem;
@@ -61,7 +62,7 @@
   text-align: center;
   color: grey;
   background-color: black;
-  width: 15rem;
+  width: 22rem;
   height: 3rem;
   box-shadow: 2px 2px 5px 4px rgba(41, 41, 41, 0.13) inset;
   border-radius: 0.15rem;
@@ -74,28 +75,28 @@
 .bottomBTN button{
   position: relative;
   text-align: center;
-  border-top-color:#00000000;;
-  border-left-color:#00000000;
-  border-right-color:#00000000;
-  border-bottom: 1px solid black;
   color: black;
   background-color:#00000000;
+  border:none;
   font-family: 'Orbit-Regular', sans-serif;
+}
+.bottomBTN p{
+  top: 0.25rem;
+  margin: 0;
+  position: relative;
+  left: 6rem;
 }
 .bottomBTN button:hover {
   color: #1e9d82;
-  border-top-color:rgba(0, 0, 0, 0);
-  border-left-color:rgba(0, 0, 0, 0);
-  border-right-color:rgba(0, 0, 0, 0);
-  border-bottom: 1px solid #1e9d82;
 }
 .goToSignUp{
   position: relative;
-  right: -2.25rem;
+  border:none;
+  right: -6rem;
 }
-.goToNewPW{
+.bottomBTN .goToNewPW{
   position: relative;
-  left: -2rem;
+  right: -6rem;
 }
  .ha-screen-reader{
   width: var(--ha-screen-reader-width, 1px);
@@ -138,7 +139,7 @@
 
 .field__input{
   box-sizing: border-box;
-  width: var(--fieldWidth, 15rem);
+  width: var(--fieldWidth, 22rem);
   height: var(--fieldHeight, 4rem);
   padding: var(--fieldPaddingTop, 1.25rem) var(--uiFieldPaddingRight) var(--fieldPaddingBottom, .5rem) var(--uiFieldPaddingLeft);
   border-bottom: var(--uiFieldBorderWidth) solid var(--fieldBorderColor, rgba(0, 0, 0, 0));  
@@ -234,7 +235,7 @@
 
 .alertWrong{
   text-align: end;
-  width: 15rem;
+  width: 22rem;
   color: rgb(202,119,0);
   font-size: 0.65rem;
   position: relative;
@@ -248,7 +249,7 @@
   font-size: 0.6rem;
   border-radius: 0.25rem;
   position: absolute;
-  margin-left: 12.7rem;
+  margin-left: 19.7rem;
   margin-top: 1.6rem;
   border: none;
   width: 2.2rem;
@@ -262,7 +263,7 @@
   font-size: 0.6rem;
   border-radius: 0.25rem;
   position: absolute;
-  margin-left: 12.7rem;
+  margin-left: 19.7rem;
   margin-top: 5.6rem;
   border: none;
   width: 2.2rem;
@@ -276,7 +277,7 @@
   font-size: 0.6rem;
   border-radius: 0.25rem;
   position: absolute;
-  margin-left: 12.7rem;
+  margin-left: 19.7rem;
   margin-top: 5.6rem;
   border: none;
   width: 2.2rem;
@@ -290,7 +291,7 @@
   font-size: 0.6rem;
   border-radius: 0.25rem;
   position: absolute;
-  margin-left: 12.7rem;
+  margin-left: 19.7rem;
   margin-top: 9.6rem;
   border: none;
   width: 2.2rem;
@@ -304,7 +305,7 @@
   font-size: 0.6rem;
   border-radius: 0.25rem;
   position: absolute;
-  margin-left: 12.7rem;
+  margin-left: 19.7rem;
   margin-top: 9.6rem;
   border: none;
   width: 2.2rem;
