@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   height: 5rem;
-  width: 99.8vw;
+  width: 99.7vw;
   position: fixed;
   top:0;
   border-bottom: 0.5px solid rgba(211, 211, 211, 0.5);
@@ -227,7 +227,6 @@ input {
   line-height: 2rem;
 }
 .toUpload:disabled{
-
   color:white;
   background-color: rgba(0, 0, 0, 0.15);
 

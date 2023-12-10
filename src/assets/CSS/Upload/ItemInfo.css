@@ -20,55 +20,132 @@
   outline: none;
   border: 0.1px solid lightgrey;
   padding-left: 1rem;
-    width: 18.8rem;
+  width: 18.8rem;
   height: 2.5rem;
 }
 #ShowItems{
-  position: absolute;
-  max-height: 15rem;
-  top: 4.6rem;
+  overscroll-behavior-y: contain;
+  top: 9.1rem;
   width: 20rem;
+  max-height: 15rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
   z-index: 5;
   background-color: white;
   display: flex;
   flex-direction: column;
+  border:  0.01px solid rgba(30, 159, 131, 0.25);
 }
 #ShowItemsETC {
-  margin-top: 4.55rem;
   position: absolute;
+  background-color: white;
+  z-index: 15;
+  top: 9.1rem;
+  width: 20rem;
+  border:  0.01px solid rgba(30, 159, 131, 0.25);
+}
+#ShowItemsETC:hover{
+  background-color: #F4FAF9;
+
 }
 #ShowItems button{
   width: 100%;
-  height: 3rem;
+  height: 3.2rem;
+  background-color: white;
+  border: none;
 }
+#ShowItems button:hover{
+  background-color: #1e9f830d;
+}
+
 #ShowItems img{
   position: absolute;
   height: 2.5rem;
-  left: 0.25rem;
+  left: 1.25rem;
   width: 2.5rem;
-  margin-top: -0.8rem;
+  margin-top: 0.275rem;
   object-fit: cover;
   border-radius: 0.25rem;
 }
 #ShowItems p{
-  padding: 0;
+  display: flex;
+    padding: 0;
     margin: 0;
-    width: 15rem;
+    width: 16rem;
     margin-left: 3rem;
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
 }
 #checkedItem{
   background-color: grey;
 }
 #etcICON{
   position: absolute;
-  height: 2.5rem;
+  height: 2.25rem;
   left: 0.25rem;
-  width: 2.5rem;
-  margin-top: -0.8rem;
+  width: 2.25rem;
+  margin-top: 0.125rem;
   object-fit: cover;
   border-radius: 0.25rem;
+  color: rgb(30, 159, 131, 0.755);
 
 }
+#selectedItem{
+  display: flex;
+  flex-direction: row;
+  background-color: white;  
+  border-radius: 0.25rem;
+  outline: none;
+  border: 0.1px solid lightgrey;
+  padding-left: 1rem;
+  width: 19rem;
+  height: 2.5rem;
+  margin-top: 1.75rem;
+  margin-bottom: -2rem; 
+}
+#selectedItem img{
+  width: 2.125rem;
+  height: 2.125rem;
+  margin-top: 0.2rem;
+  margin-left: -0.8rem;
+  object-fit: cover;
+  border-radius: 0.25rem;
+}
+#selectedItem p{
+  display: flex;
+  padding: 0;
+  margin: 0;
+  width: 16rem;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+#selectedItem button{
+  height: 2rem;
+  width: 2rem;
+  margin-top: 0.25rem;
+  border-radius: 50%;
+  border: none;
+  background-color: white;
+}
+#selectedItem button svg{
+  margin-left: -0.2rem;
+  margin-top:0.25rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  color: rgb(30, 159, 131);
+}
+#checkedETC{
+  width: 2.125rem;
+  height: 2.125rem;
+  margin-top: 0.2rem;
+  margin-left: -0.8rem;
+  color: rgb(30, 159, 131, 0.755);
+}
+
 #ShowItems input{
   width: 0;
   visibility: hidden;

@@ -9,11 +9,11 @@ import { BiSolidImageAdd } from "react-icons/bi";
 import "assets/CSS/Upload/Upload.css";
 import AlertModal from "components/Modal/AlertModal";
 import ItemInfo from "components/Posting/ItemInfo";
+import ScrollToTop from "utils/ScrollToTop";
+import Rating from "@mui/material/Rating";
 const Upload = () => {
-  window.scrollTo({ top: 0, behavior: "auto" });
   const location = useLocation();
   const [modal, setModal] = useState("close");
-
   const imgRef_up = useRef(null);
   const [imgList, setImgList] = useState([]);
   const [postInfo, setPostInfo] = useState({
@@ -21,6 +21,8 @@ const Upload = () => {
     title: "",
     content: "",
     type: "",
+    star: "",
+    prod: "",
   });
 
   useEffect(() => {
@@ -61,14 +63,15 @@ const Upload = () => {
     setPostInfo((prev) => ({ ...prev, [target]: value }));
   };
   return (
-    <div>
+    <div
+      className="Upload"
+      style={{
+        height: `${850 + postInfo.content.split("\n").length * 20}px`,
+      }}
+    >
+      <ScrollToTop />
       <HeaderUpload props={postInfo} img={imgList} />
-      <div
-        className="Upload"
-        style={{
-          height: `${550 + postInfo.content.split("\n").length * 20}px`,
-        }}
-      >
+      <div>
         <label className="title_input_label" htmlFor="title">
           <input
             className="title_input"
@@ -80,7 +83,16 @@ const Upload = () => {
         </label>
 
         <div className="UploadContainer">
-          {location.state === "upload-review" && <ItemInfo />}
+          {location.state === "upload-review" && (
+            <ItemInfo
+              onCheck={(prod) =>
+                setPostInfo((prev) => ({
+                  ...prev,
+                  prod: prod,
+                }))
+              }
+            />
+          )}
           {location.state === "upload-pets" && (
             <TypeRadio
               TypeCheck={(selectedType) => setValue(selectedType, "type")}
@@ -113,6 +125,21 @@ const Upload = () => {
               </div>
             </div>
           </div>
+          {location.state === "upload-review" && (
+            <div className="Rating_up">
+              <p>별점</p>
+              <Rating
+                precision={0.5}
+                value={postInfo.start}
+                onChange={(event, newValue) => {
+                  setPostInfo((prev) => ({
+                    ...prev,
+                    start: newValue,
+                  }));
+                }}
+              />
+            </div>
+          )}
           <label htmlFor="content">
             <textarea
               placeholder="본문을 자유롭게 적어주세요"
@@ -138,8 +165,3 @@ const Upload = () => {
   );
 };
 export default Upload;
-
-/*
-// 나중에 출력할 때 줄 바꿈을 적용하고 싶을 때
-return <div>{text.split("\n").map((line, index) => <div key={index}>{line}</div>)}</div>;
-*/

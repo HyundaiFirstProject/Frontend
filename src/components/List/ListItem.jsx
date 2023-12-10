@@ -3,6 +3,7 @@ import UserIMG from "components/UserProfile/userIMG";
 import truncateText from "utils/truncateText.js";
 import { GoHeart } from "react-icons/go";
 import { FaRegEye } from "react-icons/fa6";
+import { PiBookmarkSimpleThin } from "react-icons/pi";
 const ListItem = ({ props }) => {
   const user = {
     no: 1,
@@ -25,15 +26,32 @@ const ListItem = ({ props }) => {
         <img src={props.img} alt={props.title} />
       </div>
       <div className="List_title">
-        <p className="subList_Title">{props.type}</p>
-        <p>{truncateText(props.title, 17)}</p>
+        {props.product === undefined && (
+          <p className="subList_Title">
+            {props.type === "cat" && <p> 🐱고양이 </p>}
+            {props.type === "dog" && <p>🐶강아지 </p>}
+            {props.type === "bird" && <p>🐥새 </p>}
+            {props.type === "fish" && <p> 🐟물고기 </p>}
+            {props.type === "설치류" && <p> 🐹설치·토끼류 </p>}
+            {props.type === "파충류/양서류" && <p>🦖파충류·양서류 </p>}
+            {props.type === "기타" && <p>🐉기타동물 </p>}
+          </p>
+        )}
+        {props.product !== undefined && (
+          <p className="subList_Title_star">
+            <p>⭐️{props.star}</p>
+          </p>
+        )}
+        <p className="title">{truncateText(props.title, 17)}</p>
       </div>
       <div className="List_user_writer">
         <UserIMG props={user} className="userimg_List" />
         <p>{props.writer}</p>
       </div>
       <div className="List_watch_likes">
-        <GoHeart />
+        {props.product === undefined && <GoHeart />}
+        {props.product !== undefined && <PiBookmarkSimpleThin />}
+
         <p>{props.likes}</p>
         <FaRegEye />
         <p>{props.watch}</p>

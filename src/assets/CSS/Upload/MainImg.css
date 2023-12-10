@@ -1,3 +1,4 @@
+
 #MainImg{
   height: 20rem;
   width: 20rem;
@@ -65,16 +66,16 @@
   flex: 1 0 100%; /* 배너 이미지들이 가로로 균일하게 분할되도록 추가 */
 }
 .IMGtoLeft svg{
-  width: 3rem;
-  height: 3rem;
+  width: 1rem;
+  height: 1rem;
   margin-top: 0.25rem;
-  margin-right: 0.2rem;
+  margin-right: 0.1rem;
 }
 .IMGtoRight svg{
-  width: 3rem;
-  height: 3rem;
+  width: 1rem;
+  height: 1rem;
   margin-top: 0.25rem;
-  margin-left: 0.2rem;
+  margin-left: 0.1rem;
 }
 .IMGtoLeft,
 .IMGtoRight {
@@ -83,19 +84,19 @@
   background-color: rgb(30,157,130, 0.25);
   color:rgb(255, 255, 255);
   border-radius: 50%;
-  width: 5rem;
-  height: 5rem;
+  width: 2rem;
+  height: 2rem;
   border: none;
   z-index: 10;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
 .IMGtoLeft {
-  right: 17.5rem;
+  right: 18rem;
   transform: translateY(-50%);
 }
 .IMGtoRight {
-  left: 17.5rem;
+  left: 18rem;
   transform: translateY(-50%);
 }
 .IMG img {
@@ -104,4 +105,17 @@
   height: 20rem; /* 이미지의 높이를 부모 요소(div)에 맞게 설정 */
   object-fit: cover; /* 이미지를 부모 요소에 맞게 자르기 */
   object-position: center top; /* 이미지의 중심을 기준으로 자르기 */
+}
+
+
+
+.MaingIMGBTN .IMGtoRight,
+.MaingIMGBTN .IMGtoLeft {
+  opacity: 0; 
+  transition: opacity 0.3s ease;
+}
+
+.MaingIMGBTN:hover .IMGtoRight,
+.MaingIMGBTN:hover .IMGtoLeft {
+  opacity: 1; /* 호버 시에 보이게 함 */
 }

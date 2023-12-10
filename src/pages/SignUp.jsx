@@ -1,6 +1,5 @@
 import "assets/CSS/Login.css";
 import React, { useEffect, useState, useRef } from "react";
-import serverURL from "store/Server/ServerURL";
 import { useNavigate } from "react-router-dom";
 import usePost from "hooks/axiosWithCredentials/usePost";
 import InputCSS from "components/SignUp/InputCSS";
@@ -13,7 +12,6 @@ import AlertModal from "components/Modal/AlertModal";
 const SignUp = () => {
   const navigate = useNavigate();
   const { postWithCredentials } = usePost();
-  const url = serverURL();
   const [userInfo, setUserInfo] = useState({
     nickname: "",
     email: "",
@@ -103,7 +101,7 @@ const SignUp = () => {
   };
   return (
     <div className="container_Login">
-      <div className="LogIn_Name_su">프로젝트 네임</div>
+      <div className="LogIn_Name_su">Pet & E</div>
       <form className="input_SU" onSubmit={handleSubmit}>
         {status.nickname === "가능" && (
           <p className="alertWrong">사용 가능한 닉네임입니다.</p>

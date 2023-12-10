@@ -42,7 +42,7 @@ const Login = () => {
 
   return (
     <div className="container_Login">
-      <div className="LogIn_Name">프로젝트 네임</div>
+      <div className="LogIn_Name">Pet & E</div>
       <form className="input_LOG" onSubmit={handleSubmit}>
         <InputCSS
           name="이메일"

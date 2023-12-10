@@ -18,11 +18,11 @@ const Header = () => {
 
   const user = {
     no: 1,
-    img_url: "false",
-    //img_url:
-    //"https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
+    //img_url: "false",
+    img_url:
+      "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
   };
-  const isLog = false;
+  const isLog = true;
   return (
     <div className=" header">
       <div className="Logo_Header">
@@ -74,14 +74,14 @@ const Header = () => {
                   navigate("/upload/review", { state: "upload-review" })
                 }
               >
-                🐾후기 게시판
+                🌟 THEPET 제품후기 작성하기 🌟
               </button>
               <button
                 onClick={() =>
                   navigate("/upload/pets", { state: "upload-pets" })
                 }
               >
-                자랑 게시판
+                🐾 우리집 반려동물 자랑하기 🐾
               </button>
             </div>
           </div>

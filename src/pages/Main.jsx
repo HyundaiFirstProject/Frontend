@@ -3,6 +3,7 @@ import Banner from "components/Main/Banner";
 import MainList from "components/Main/MainList";
 import dummy from "assets/dummyForTest/dummy_main.json";
 import dummy2 from "assets/dummyForTest/dummy_mainList.json";
+import dummy3 from "assets/dummyForTest/dummy_mainList2.json";
 import Header from "components/header/Header";
 import Footer from "components/footer/Footer";
 import "assets/CSS/Main/Main.css";
@@ -40,7 +41,7 @@ const Main = () => {
             <p className="smallP">다른 집사님들의 선택!</p>
             <button onClick={() => navigate("/list-review/1")}>더보기</button>
           </div>
-          <MainList props={dummy2.item} />
+          <MainList props={dummy3.item} />
         </div>
         <div className="mainList">
           <div className="mainTag">

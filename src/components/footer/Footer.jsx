@@ -31,7 +31,7 @@ const Footer = () => {
         </div>
         <div className="FotterLine">{}</div>
         <div>
-          <h2>프로젝트 데이터 출처</h2>
+          <h2>Pet&E 데이터 출처</h2>
           <p>
             현대 it&E <br />
             https://www.hyundai-ite.com

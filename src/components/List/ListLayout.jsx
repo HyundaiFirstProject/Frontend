@@ -10,7 +10,14 @@ const ListLayout = ({ props }) => {
       }
     >
       {props.item.map((item, index) => (
-        <a href="posts/1/13" key={`${index}`}>
+        <a
+          href={
+            props.item[0].product !== undefined
+              ? `/list-review/posts/1/13`
+              : `/list-pets/posts/1/13`
+          }
+          key={`${index}`}
+        >
           {/* // <a
           href={
             props.item[0].product !== undefined

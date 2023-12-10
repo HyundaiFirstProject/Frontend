@@ -17,32 +17,49 @@
   overflow-y: hidden;
   border-radius: 0.25rem;
 }
-.ListItem img{
+.ListItemIMG_Container img{
   width: 17.6rem;
   height: 11rem;
   object-fit: cover;
   border-radius: 0.25rem;
   transition: transform 0.3s ease;
 }
-.ListItem img:hover {
+.ListItemIMG_Container img:hover {
   transform: scale(1.05); /* 마우스 호버 시 약간 축소되는 효과 */
 }
 .List_title{
+  position:relative;
   display: flex;
-  flex-direction: row;
-  width: 100%;
+  flex-direction: row; 
+  width: 17.6rem;
   margin-top: -0.5rem;
   word-break: keep-all;
   justify-content: center;
 }
-.List_title p{
+.List_title .title{
   font-size: 0.9rem;
   font-weight: 900;
-  letter-spacing: -1.25px
+  letter-spacing: -1.25px;
+  width:13.5rem;
+  margin-left: 5rem;
 }
-.List_title .subList_Title{
+.List_title .subList_Title p{
   color:rgb(30,157,130);
-  width: 22%;
+  width: 5rem;
+  position:absolute;
+  font-weight: 900;
+  left: 0.4rem;
+  top:1rem;
+  margin: 0;
+}
+.List_title .subList_Title_star{
+  color:rgb(30,157,130);
+  width: 5rem;
+  position:absolute;
+  font-weight: 900;
+  left: 1.2rem;
+  top:0rem;
+  margin: 0;
 }
 .List_user_writer{
   display: flex;
@@ -73,7 +90,7 @@
   margin-top: 0;
 }
 .productList{
-  margin:0.25rem 0.3rem 0.25rem 0.3rem;
+  margin:0rem 0.3rem 0.5rem 0.3rem;
   width: 17rem;
   height: 2.5rem;
   border-radius: 3rem;

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "assets/CSS/Upload/MainImg.css";
+import "assets/CSS/Posts/ImgPosts.css";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
-const SlidingImg = ({ props }) => {
+const ImgPosts = ({ props }) => {
   const [currentIMG, setCurrentIMG] = useState(0);
 
   const nextIMG = () => {
@@ -17,16 +17,12 @@ const SlidingImg = ({ props }) => {
   };
 
   return (
-    <div className="MaingIMGBTN">
-      <button className="IMGtoLeft" onClick={previousIMG}>
+    <div className="ImgPosts">
+      <button className="ImgPostsLeftBTN" onClick={previousIMG}>
         <FaAngleLeft />
       </button>
-      <div
-        className={
-          props.length !== 0 ? "IMG-container-background" : "IMG-container"
-        }
-      >
-        <div className="IMG" style={IMGStyle}>
+      <div className="IMG-container_Posts">
+        <div className="IMG_Posts" style={IMGStyle}>
           {props.map((src, index) => (
             <div key={index}>
               <img src={src} alt="" />
@@ -34,10 +30,10 @@ const SlidingImg = ({ props }) => {
           ))}
         </div>
       </div>
-      <button className="IMGtoRight" onClick={nextIMG}>
+      <button className="ImgPostsRightBTN" onClick={nextIMG}>
         <FaAngleRight />
       </button>
     </div>
   );
 };
-export default SlidingImg;
+export default ImgPosts;

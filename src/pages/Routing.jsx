@@ -7,7 +7,6 @@ import ListReview from "pages/ListReview";
 import Login from "pages/Login";
 import SignUp from "pages/SignUp";
 import Mypage from "pages/Mypage";
-import PostReview from "pages/PostReview";
 import Upload from "pages/Upload";
 import Posts from "pages/Posts";
 const Routing = () => {
@@ -23,8 +22,8 @@ const Routing = () => {
         ></Route>
         <Route path="/list-review/:pageNumber" element={<ListReview />}></Route>
         <Route
-          path="/list-review/:pageNumber/:postID"
-          element={<PostReview />}
+          path="/list-review/posts/:pageNumber/:postID"
+          element={<Posts />}
         ></Route>
         <Route path="/upload/:status" element={<Upload />}></Route>
         <Route path="/upload/:status/:postID" element={<Upload />}></Route>
