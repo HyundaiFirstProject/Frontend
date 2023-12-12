@@ -51,6 +51,7 @@ const SignUp = () => {
     const isNotDup = true;
     //EmailConfirm(userInfo.email); //중복 확인
 
+    setModal("loading");
     if (status.email !== "인증번호O") {
       if (isNotDup) {
         const rand = Math.floor(100000 + Math.random() * 900000);

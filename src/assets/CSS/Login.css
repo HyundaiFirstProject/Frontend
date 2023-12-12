@@ -3,9 +3,20 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0;
+  margin: 0
 }
-
+.container_findPW{
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  align-items: center;
+}
+.container_findPW form{
+  display: flex;
+  flex-direction: column;
+}
 .LogIn_Name{
   margin: auto;
   font-size: 1.75rem;   
@@ -257,7 +268,7 @@
   height: 2.2rem;
   font-family: 'Orbit-Regular', sans-serif;
 }
-.confirmBTN_email{
+.confirmBTN_email, .container_findPW .confirmBTN_email_findPW{
   background-color: rgba(30, 157, 130, 0.4);
   color: white;
   font-size: 0.6rem;
@@ -271,7 +282,10 @@
   height: 2.2rem;
   font-family: 'Orbit-Regular', sans-serif;
 }
-.confirmBTN_email_dis{
+.container_findPW .confirmBTN_email_findPW{
+  margin-top:0rem;
+}
+ .confirmBTN_email_dis, .container_findPW .confirmBTN_email_dis_findPW{
   background-color: rgba(176, 176, 176, 0.4);
   color: white;
   font-size: 0.6rem;
@@ -285,7 +299,10 @@
   height: 2.2rem;
   font-family: 'Orbit-Regular', sans-serif;
 }
-.confirmBTN_email_autho{
+.container_findPW .confirmBTN_email_dis_findPW{
+  margin-top:0rem;
+}
+.confirmBTN_email_autho, .confirmBTN_email_autho_findPW{
   background-color: rgba(30, 157, 130, 0.4);
   color: white;
   font-size: 0.6rem;
@@ -299,7 +316,7 @@
   height: 2.2rem;
   font-family: 'Orbit-Regular', sans-serif;
 }
-.confirmBTN_email_dis_autho{
+.confirmBTN_email_dis_autho, .confirmBTN_email_dis_autho_findPW{
   background-color: rgba(176, 176, 176, 0.4);
   color: white;
   font-size: 0.6rem;
@@ -312,4 +329,8 @@
   padding: 0;
   height: 2.2rem;
   font-family: 'Orbit-Regular', sans-serif;
+}
+.confirmBTN_email_dis_autho_findPW, .confirmBTN_email_autho_findPW{
+  margin-top: 8rem;
+
 }

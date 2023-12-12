@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "assets/CSS/Mypage/Mypage.css";
 import dummy from "assets/dummyForTest/dummy_mainList_long.json";
 import dummy_short from "assets/dummyForTest/dummy_mainList.json";
+import dummy_2 from "assets/dummyForTest/dummy_mainList2.json";
 import MyPageList from "./MyPageList";
 const MypageNavBar = () => {
   const [mypageState, setMypageState] = useState("first");
@@ -34,9 +35,9 @@ const MypageNavBar = () => {
         </button>
       </div>
       {mypageState === "first" && <MyPageList props={dummy} />}
-      {mypageState === "second" && <MyPageList props={dummy} />}
-      {mypageState === "third" && <MyPageList props={dummy} />}
-      {mypageState === "fourth" && <MyPageList props={dummy_short} />}
+      {mypageState === "second" && <MyPageList props={dummy_2} />}
+      {mypageState === "third" && <MyPageList props={dummy_short} />}
+      {mypageState === "fourth" && <MyPageList props={dummy_2} />}
     </div>
   );
 };

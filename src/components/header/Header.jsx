@@ -18,9 +18,9 @@ const Header = () => {
 
   const user = {
     no: 1,
-    //img_url: "false",
-    img_url:
-      "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
+    img_url: "false",
+    //img_url:
+    //  "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
   };
   const isLog = true;
   return (

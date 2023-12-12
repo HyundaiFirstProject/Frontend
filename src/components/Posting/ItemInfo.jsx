@@ -93,7 +93,7 @@ const ItemInfo = ({ onCheck }) => {
         {isDivVisible && keyword !== "" && (
           <div
             id={isEntered ? "ShowItems" : "HideItems"}
-            style={{ height: `${filteredItems.length * 3}rem` }}
+            style={{ height: `${filteredItems.length * 3.2}rem` }}
           >
             {filteredItems.map((prod) => (
               <div key={prod.id}>

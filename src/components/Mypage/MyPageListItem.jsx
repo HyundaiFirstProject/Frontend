@@ -1,10 +1,10 @@
 import React from "react";
 import "assets/CSS/Main/MainList.css";
 import "assets/CSS/Mypage/MypageList.css";
-import { GoHeart } from "react-icons/go";
-import { GoComment } from "react-icons/go";
 import { FaRegEye } from "react-icons/fa6";
-//import { GoHeartFill } from "react-icons/go";
+import { PiBookmarkSimpleThin } from "react-icons/pi";
+import { PiHeartThin } from "react-icons/pi";
+import { PiChatsThin } from "react-icons/pi";
 const MyPageListItem = ({ props }) => {
   return (
     <div className="MyPageListContainer">
@@ -18,11 +18,12 @@ const MyPageListItem = ({ props }) => {
         </div>
         <div className="MyPageUnder">
           <div className="MyPageUnder_div">
-            <GoHeart />
+            {props.product === undefined && <PiHeartThin />}
+            {props.product !== undefined && <PiBookmarkSimpleThin />}
             <p>{props.likes}</p>
           </div>
           <div className="MyPageUnder_div">
-            <GoComment />
+            <PiChatsThin />
             <p>{props.comment}</p>
           </div>
         </div>

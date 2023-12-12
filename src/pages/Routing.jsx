@@ -9,11 +9,16 @@ import SignUp from "pages/SignUp";
 import Mypage from "pages/Mypage";
 import Upload from "pages/Upload";
 import Posts from "pages/Posts";
+import ProfileUpload from "pages/ProfileUpload";
+import Withdrawal from "pages/Withdrawal";
+import FindPW from "pages/FindPW";
+import LoginCallback from "pages/LoginCallback";
 const Routing = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />}></Route>
+        <Route path="/callback" element={<LoginCallback />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
         <Route path="/list-pets/:pageNumber" element={<ListPets />}></Route>
         <Route
@@ -31,6 +36,12 @@ const Routing = () => {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signUp" element={<SignUp />}></Route>
         <Route path="/mypage" element={<Mypage />}></Route>
+        <Route
+          path="/profileupload/:useNum"
+          element={<ProfileUpload />}
+        ></Route>
+        <Route path="/withdrawal/:useNum" element={<Withdrawal />}></Route>
+        <Route path="/findPW" element={<FindPW />}></Route>
       </Routes>
     </BrowserRouter>
   );

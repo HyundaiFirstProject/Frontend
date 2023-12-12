@@ -1,22 +1,35 @@
 import { PiHeartThin } from "react-icons/pi";
 import { PiBookmarkSimpleThin } from "react-icons/pi";
 import UserIMG from "components/UserProfile/userIMG";
+import { useNavigate } from "react-router-dom";
 import "assets/CSS/Mypage/Mypage.css";
+import { CiLogout } from "react-icons/ci";
 const InfoBar = () => {
+  const navigate = useNavigate(); ///api/getUserInfo
   const user = {
     no: 1,
     nickname: "닉네임",
     user_like_pets_num: 0,
     user_like_review_num: 0,
-    //img_url: "false",
-    img_url:
-      "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
+    img_url: "false",
+    //img_url:
+    //"https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
   };
+  const handleLogout = () => {};
   return (
     <div className="Mypage_Left">
       <UserIMG props={user} className="userimg_myPage" />
       <p>{user.nickname}</p>
-      <button>설정</button>
+      <button
+        onClick={() => {
+          navigate(`/profileupload/${user.no}`, { state: user.no });
+        }}
+      >
+        설정
+      </button>
+      <button onClick={handleLogout} className="logout">
+        <CiLogout />
+      </button>
       <hr className="HR" />
       <div className="userInfo_Mypage">
         <div className="mypage_infoBar">

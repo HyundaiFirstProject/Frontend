@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import HeaderUpload from "components/header/Header_upload";
 import ListMap from "components/Posting/ListMap";
 import TypeRadio from "components/Posting/TypeRadio";
@@ -11,20 +11,65 @@ import AlertModal from "components/Modal/AlertModal";
 import ItemInfo from "components/Posting/ItemInfo";
 import ScrollToTop from "utils/ScrollToTop";
 import Rating from "@mui/material/Rating";
+import ReactQuill from "react-quill";
+//import axios from "axios";
+
 const Upload = () => {
   const location = useLocation();
   const [modal, setModal] = useState("close");
   const imgRef_up = useRef(null);
+  const quillRef = useRef();
   const [imgList, setImgList] = useState([]);
   const [postInfo, setPostInfo] = useState({
     id: 0,
     title: "",
     content: "",
     type: "",
-    star: "",
+    star: 0,
     prod: "",
   });
-
+  const [prevContent, setPrevContent] = useState(postInfo.content);
+  const imageHandler = useCallback(() => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.addEventListener("change", async () => {
+      const file = input.files[0];
+      const formData = new FormData();
+      formData.append("img", file);
+      console.log(file);
+      // try {
+      //   const result = await axios.post("", formData);
+      //   console.log("성공 시", result.data.url);
+      //   const IMG_URL = result.data.url;
+      //   const editor = quillRef.current.getEditor();
+      //   const range = editor.getSelection();
+      //   editor.insertEmbed(range.index, "image", IMG_URL);
+      // } catch (error) {
+      //   console.log("실패");
+      // }
+    });
+  }, []);
+  const modules = {
+    toolbar: {
+      container: [
+        ["image"],
+        [{ header: [1, 2, 3, 4, 5, false] }],
+        ["bold", "underline", "italic", "blockquote", "strike"],
+        [{ color: [] }],
+        [{ background: [] }],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["link"],
+      ],
+      handlers: {
+        image: imageHandler,
+      },
+    },
+  };
+  const handleContentChange = (content) => {
+    setPostInfo({ ...postInfo, content }); // 상태 업데이트
+  };
   useEffect(() => {
     //수정일 때
     if (
@@ -62,13 +107,15 @@ const Upload = () => {
   const setValue = (value, target) => {
     setPostInfo((prev) => ({ ...prev, [target]: value }));
   };
+  useEffect(() => {
+    if (prevContent !== postInfo.content) {
+      window.scrollTo(0, document.body.scrollHeight);
+      setPrevContent(postInfo.content); // 변경된 내용으로 업데이트
+    }
+  }, [postInfo.content, prevContent]);
+
   return (
-    <div
-      className="Upload"
-      style={{
-        height: `${850 + postInfo.content.split("\n").length * 20}px`,
-      }}
-    >
+    <div className="Upload">
       <ScrollToTop />
       <HeaderUpload props={postInfo} img={imgList} />
       <div>
@@ -130,29 +177,28 @@ const Upload = () => {
               <p>별점</p>
               <Rating
                 precision={0.5}
-                value={postInfo.start}
+                value={postInfo.star}
                 onChange={(event, newValue) => {
                   setPostInfo((prev) => ({
                     ...prev,
-                    start: newValue,
+                    star: newValue,
                   }));
                 }}
               />
+              <p>
+                {Number.isInteger(postInfo.star)
+                  ? postInfo.star.toFixed(1)
+                  : postInfo.star}
+              </p>
             </div>
           )}
-          <label htmlFor="content">
-            <textarea
-              placeholder="본문을 자유롭게 적어주세요"
-              className="content"
-              value={postInfo.content}
-              style={{
-                height: `${50 + postInfo.content.split("\n").length * 20}px`,
-              }}
-              onChange={(e) =>
-                setValue(e.target.value.replace(/\\n/g, "\n"), "content")
-              }
-            />
-          </label>
+          <ReactQuill
+            ref={quillRef}
+            className="Quill"
+            value={postInfo.content}
+            modules={modules}
+            onChange={handleContentChange}
+          />
         </div>
       </div>
       {modal !== "close" && (

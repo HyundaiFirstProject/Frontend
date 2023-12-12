@@ -9,7 +9,7 @@
   margin-top: 0.6rem;
   height: 91%;
   width: 97%;
-  border-radius: 50%
+  border-radius: 2.5rem
 }
 .userimg_myPage{
   align-items: center;
@@ -18,7 +18,7 @@
     width: 7.5rem;
     height: 7.5rem;
     margin-top: -1rem;
-    border-radius: 50%;
+    border-radius: 2.5rem;
     background-color: rgba(0, 0, 0, 0.114);
 }
 .userimg_myPage img{
@@ -46,13 +46,13 @@
 .List_user_writer .userimg_List{
   width: 1.25rem;
   height: 1.25rem;
-  border-radius: 50%;
+  border-radius: 0.25rem;
   transition: none;
 }
 .userimg_List:hover{
   width: 1.25rem;
   height: 1.25rem;
-  border-radius: 50%;
+  border-radius: 0.25rem;
 }
 .posting_container{
   border-radius: 0.5rem;
@@ -100,4 +100,32 @@
     width:3rem;
     height:3rem;
     object-fit: cover;
+  }
+
+  .userimg_myPage_upload_container{
+      width: 10rem;
+      justify-content: center;
+      align-items: center;
+      display: flex;    
+      height: 10rem;
+      margin-top:1.25rem
+  }
+  .userimg_myPage_upload_container svg{
+    color: rgba(30,157,130,0.5);
+    margin-top: 0.6rem;
+    height: 91%;
+    width: 97%;
+    border-radius: 0.5rem
+  }
+  .userimg_myPage_upload{
+    align-items: center;
+      justify-content: center;
+      display: flex;
+      width: 10rem;
+      height:10rem;
+      border-radius:0.5rem;
+      background-color: rgba(0, 0, 0, 0.114);
+  }
+  .userimg_myPage_upload img{
+    background-color: white;
   }

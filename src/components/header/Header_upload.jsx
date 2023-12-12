@@ -2,22 +2,22 @@ import { useNavigate } from "react-router-dom";
 import "assets/CSS/Header.css";
 import Logo from "assets/images/Logo.png";
 import React from "react";
-import usePost from "hooks/axiosWithCredentials/usePost";
+//import usePost from "hooks/axiosWithCredentials/usePost";
 const Header_upload = ({ props, img }) => {
   const navigate = useNavigate();
-  const { postWithCredentials } = usePost();
+  //const { postWithCredentials } = usePost();
   const bodyData = {
     ...props,
     imgUrlList: img,
   };
   const postDataWithBody = async () => {
-    console.log(bodyData);
-    try {
-      const res = await postWithCredentials(`/api/bestPetsPost/`, bodyData);
-      console.log(res);
-    } catch (error) {
-      // 에러 처리
-    }
+    console.log(JSON.stringify(bodyData));
+    // try {
+    //   const res = await postWithCredentials(`/api/bestPetsPost/`, bodyData);
+    //   console.log(res);
+    // } catch (error) {
+    //   // 에러 처리
+    // }
   };
   return (
     <div className="header_up">
