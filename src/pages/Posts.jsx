@@ -8,14 +8,14 @@ import UserIMG from "components/UserProfile/userIMG";
 import SideBar from "components/Posting/SideBar";
 import Comment from "components/Posting/Comment";
 import { FaStar } from "react-icons/fa";
+import { useRef } from "react";
+//import content1 from "assets/dummyForTest/content.text";
 const Posts = () => {
   const { postID } = useParams();
   const navigate = useNavigate();
   const postInfo = {
     id: 13,
     title: "제목제목zzzz 제목",
-    content:
-      "내용sdfsdfasddfas \n\nsfasdfuakwhfiawufhnskdjfnaeuilrfhnwe\nsdkjfhnaiseukfnawskjdn\nsfasdfuakwhfiawufhnskdjfnaeuilrfhnwe\nsdkjfhnaiseukfnawskjdcvn\nsfasdfuakwhfiawufhnskdjfnaeuilrfhnwe\nsdkjfhnaiseukfnawskjdcvn\nsfasdfuakwhfiawufhnskdjfnaeuilrfhnwe\nsdkjfhnaiseukfnawskjdcvcv\nsdfnaiosefhnawjksdfnsjkldfnasd\nsdjnfoaierfhnaslkdfns~~~",
     img: [
       "https://img.allurekorea.com/allure/2023/08/style_64d0bb3f18816-525x700.jpg",
       "https://cdn.jejusori.net/news/photo/202210/408666_414268_125.jpg",
@@ -28,6 +28,7 @@ const Posts = () => {
     userID: 1,
     product: "아이ss",
     star: 3.5,
+    content: "",
   };
   const userInfo = {
     nickname: "ㅎsefdsfsdㅎㅎs",
@@ -35,13 +36,23 @@ const Posts = () => {
     img_url:
       "https://www.apple.com/newsroom/images/2023/11/taylor-swift-is-apple-musics-artist-of-the-year-for-2023/tile/Apple-Music-Awards-Artist-of-the-Year-Taylor-Swift.jpg.news_app_ed.jpg",
   };
+  const scrollToComments = () => {
+    const element = commentRef.current;
+    const rect = element.getBoundingClientRect();
+    const offset = window.pageYOffset || document.documentElement.scrollTop;
 
+    window.scrollTo({
+      top: rect.top + offset - 100, // 100px 위쪽으로 조정
+      behavior: "smooth",
+    });
+  };
   const status = postInfo.product === undefined ? "list-pets" : "list-review";
+  const commentRef = useRef(null);
 
   return (
     <div id="Posts">
       <Header />
-      <SideBar props={postInfo} />
+      <SideBar props={postInfo} onScroll={scrollToComments} />
       <div id="postInfoSub">
         <div id="postInfouserInfo">
           <UserIMG props={userInfo} className="posting" />
@@ -109,11 +120,9 @@ const Posts = () => {
         </div>
       </div>
       <div id="postContent">
-        {postInfo.content.split("\n").map((line, index) => (
-          <div key={index}>{line}</div>
-        ))}
+        <div dangerouslySetInnerHTML={{ __html: postInfo.content }}></div>
       </div>
-      <Comment />
+      <Comment ref={commentRef} />
       <Footer props={postInfo.id} />
     </div>
   );

@@ -4,8 +4,8 @@ import { PiHeartFill } from "react-icons/pi";
 import "assets/CSS/Posts/SideBar.css";
 import { PiBookmarkSimpleThin } from "react-icons/pi";
 import { PiBookmarkSimpleFill } from "react-icons/pi";
-import { TfiComment } from "react-icons/tfi";
-const SideBar = ({ props }) => {
+import { PiChatsDuotone } from "react-icons/pi";
+const SideBar = ({ props, onScroll }) => {
   const [heart, setHeart] = useState(false);
   return (
     <div id="SideBar">
@@ -46,7 +46,10 @@ const SideBar = ({ props }) => {
         <p id={!heart ? "checkedHeart" : ""}>{props.likes}</p>
       </div>
       <div id="sideBarComment">
-        <TfiComment className="sideBarComment-animation" />
+        <PiChatsDuotone
+          className="sideBarComment-animation"
+          onClick={onScroll}
+        />
       </div>
     </div>
   );

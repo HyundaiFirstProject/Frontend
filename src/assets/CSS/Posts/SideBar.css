@@ -65,7 +65,7 @@
   transition: transform 0.3s ease; 
   width: 2rem;
   height: 2rem;
-  color: rgba(0, 0, 0, 0.5);
+  color: #156b58;
 
 }
 .sideBarComment-animation:hover{

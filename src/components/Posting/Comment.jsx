@@ -4,7 +4,7 @@ import "assets/CSS/Posts/Comments.css";
 import { PiHeartThin } from "react-icons/pi";
 import { PiHeartFill } from "react-icons/pi";
 import DateCheck from "utils/DateCheck";
-const Comments = ({ props }) => {
+const Comments = React.forwardRef(({ props }, ref) => {
   //postid로 댓글 가져오기
   //해당 댓글 내가 좋아요 했늕지 안했는지 가져오기
   const [heart, setHeart] = useState(false);
@@ -57,7 +57,7 @@ const Comments = ({ props }) => {
     console.log(newComment);
   };
   return (
-    <div id="Comments">
+    <div id="Comments" ref={ref}>
       <div id="numOfComm">
         댓글 <p>{comment.length}</p>
       </div>
@@ -140,5 +140,5 @@ const Comments = ({ props }) => {
       </div>
     </div>
   );
-};
+});
 export default Comments;

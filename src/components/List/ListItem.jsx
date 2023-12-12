@@ -27,7 +27,7 @@ const ListItem = ({ props }) => {
       </div>
       <div className="List_title">
         {props.product === undefined && (
-          <p className="subList_Title">
+          <div className="subList_Title">
             {props.type === "cat" && <p> 🐱고양이 </p>}
             {props.type === "dog" && <p>🐶강아지 </p>}
             {props.type === "bird" && <p>🐥새 </p>}
@@ -35,7 +35,7 @@ const ListItem = ({ props }) => {
             {props.type === "설치류" && <p> 🐹설치·토끼류 </p>}
             {props.type === "파충류/양서류" && <p>🦖파충류·양서류 </p>}
             {props.type === "기타" && <p>🐉기타동물 </p>}
-          </p>
+          </div>
         )}
         {props.product !== undefined && (
           <p className="subList_Title_star">

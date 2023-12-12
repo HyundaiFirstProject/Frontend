@@ -28,11 +28,8 @@ const Login = () => {
     try {
       const res = await postWithCredentials(`${url}/api/login`, userInfo);
       console.log(res); // 응답 데이터 사용
-      if (res.status === 200) {
-        localStorage.setItem("isLog", true);
-        navigate("/");
-      } else {
-        //모달 창 띄우기
+      if (res.status !== 200) {
+        //실패모달 창 띄우기
       }
     } catch (error) {
       //모달 창 띄우기
@@ -69,7 +66,7 @@ const Login = () => {
           <button
             className="goToNewPW"
             onClick={() => {
-              navigate("/signUp");
+              navigate("/findPW");
             }}
           >
             비밀번호 재설정

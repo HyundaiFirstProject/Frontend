@@ -8,7 +8,14 @@
   position: relative;
   margin-top: 5rem;
 }
+.Quill{
+  margin-top:2.5em;
+  width: 46rem;
+}
+.Quill .ql-editor{
 
+  min-height: 10rem;
+}
 .title_input{
   margin-top: 0.75rem;
   height: 4rem;
@@ -35,12 +42,12 @@
   cursor: pointer;
 }
 .img_input_label .uploadImgIcon{
-  width: 6rem;
-    height: 6rem;
+  width: 3.75rem;
+    height: 3.75rem;
     position: absolute;
-    top:-1.25rem;
+    top:-1.75rem;
     color: rgba(30, 159, 131, 0.75);
-    right: 35rem;
+    right: 37rem;
 }
 .title_input_label{
   border-bottom: 1.5px solid rgba(145, 145, 145, 0.2);
@@ -73,17 +80,16 @@
 .uploadImgList{
   display: flex;
   flex-direction: row;
-  height: 8rem;
-  width: 30rem;
+  height: 4rem;
+  width: 46rem;
   overflow-y: hidden;
   overflow-x: hidden;
   position: relative;
 }
 .ListMap_div{
-  margin-left: 7rem;
-  width: 23rem;
+  width: 46rem;
   height: 8rem;
-  overflow-x: auto;
+  overflow-x: auto;    margin-top: -1rem;
 }
 .setRefandVisible{
   height: 0rem;
@@ -95,7 +101,6 @@
 
 .Rating_up{
   background-color: rgba(30, 159, 131, 0.05);
-  margin-left: 0.75rem;
   display: flex;
   flex-direction: row;
   align-items: center;

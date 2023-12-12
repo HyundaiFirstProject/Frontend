@@ -1,11 +1,13 @@
 import axios from "axios";
 
 const useGet = () => {
+  const token = localStorage.getItem("accesstoken");
   const getWithCredentials = async (url, queryParams = {}) => {
     try {
       const response = await axios.get(url, {
         params: queryParams,
         withCredentials: true,
+        headers: { Authorizatoin: "Bearer " + token },
       });
       return response.data;
     } catch (error) {

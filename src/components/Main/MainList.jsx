@@ -14,7 +14,7 @@ const MainList = ({ props }) => {
           </div>
           <div className="item_info">
             {item.product === undefined && (
-              <p className="item_subtitle">
+              <div className="item_subtitle">
                 {item.type === "cat" && <p> 🐱고양이 </p>}
                 {item.type === "dog" && <p>🐶강아지 </p>}
                 {item.type === "bird" && <p>🐥새 </p>}
@@ -22,7 +22,7 @@ const MainList = ({ props }) => {
                 {item.type === "설치류" && <p> 🐹설치·토끼류 </p>}
                 {item.type === "파충류/양서류" && <p>🦖파충류·양서류 </p>}
                 {item.type === "기타" && <p>🐉기타동물 </p>}
-              </p>
+              </div>
             )}
             {item.product !== undefined && (
               <p className="item_subtitle">⭐️{item.star}</p>
