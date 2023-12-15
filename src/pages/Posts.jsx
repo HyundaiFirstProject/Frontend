@@ -142,7 +142,11 @@ const Posts = () => {
       }
     }
   };
-  if (user === null || foundItem === null || foundItem === undefined)
+  if (user === null) return null;
+  if (
+    postInfo.itemid !== undefined &&
+    (foundItem === null || foundItem === undefined)
+  )
     return null;
   return (
     <div id="Posts">

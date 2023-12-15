@@ -22,7 +22,7 @@ const Header = () => {
   };
   let isLog = localStorage.getItem("isLoged") === "true" ? true : false;
   console.log(isLog);
-  if (user === null) return null;
+  //if (user === null) return null;
   return (
     <div className=" header">
       <div className="Logo_Header">
