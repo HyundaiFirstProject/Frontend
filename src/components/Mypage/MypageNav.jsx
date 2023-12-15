@@ -112,10 +112,10 @@ const MypageNavBar = ({ user_no }) => {
           스크랩
         </button>
       </div>
-      {mypageState === "first" && <MyPageList props={dummy} />}
-      {mypageState === "second" && <MyPageList props={dummy_2} />}
-      {mypageState === "third" && <MyPageList props={dummy_short} />}
-      {mypageState === "fourth" && <MyPageList props={dummy_2} />}
+      {mypageState === "first" && <MyPageList props={list1} />}
+      {mypageState === "second" && <MyPageList props={list2} />}
+      {mypageState === "third" && <MyPageList props={list3} />}
+      {mypageState === "fourth" && <MyPageList props={list4} />}
     </div>
   );
 };

@@ -18,7 +18,8 @@ const ListReview = () => {
     try {
       const res = await axios.get(`/api/bestReviewsList`);
       console.log(res);
-      if (res.status === 200) setList(res.data);
+      if (res.status === 200)
+        setList(res.data.sort((a, b) => b.postid - a.postid));
     } catch (e) {
       console.log(e);
     }

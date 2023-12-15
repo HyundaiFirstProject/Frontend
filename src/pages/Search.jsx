@@ -6,7 +6,6 @@ import Paging from "components/Paging/Paging";
 import "assets/CSS/List/List.css";
 import ScrollToTop from "utils/ScrollToTop";
 import { useEffect, useState } from "react";
-import useUserInfo from "hooks/LoginHooks/useUserInfo";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 
@@ -14,50 +13,38 @@ const Search = () => {
   const location = useLocation();
   const keyword = location.state;
   const [page, setPage] = useState();
-  const user = useUserInfo();
   const [list, setList] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const getList = async () => {
     try {
-      let mergedList = []; // 빈 배열로 초기화
-      console.log(keyword);
-      const res = await axios.get(`/api/bestReviewsBoardSearch`, {
-        params: { keyword: keyword },
+      let mergedSet = new Set(); // Set을 생성하여 중복을 자동으로 제거하도록 설정
+
+      const res = await axios.get(`/api/bestPetsBoardSearch`, {
+        params: { content: keyword },
       });
-      console.log(res);
       if (res.status === 200) {
-        mergedList = [...mergedList, ...res.data]; // 데이터 추가
-        const res2 = await axios.get(
-          `/api/api/bestPetsBoardSearch/${encodeURIComponent(keyword)}`
-        );
+        res.data.forEach((item) => mergedSet.add(item)); // 중복 제거를 위해 Set에 추가
+        const res2 = await axios.get(`/api/bestReviewsBoardSearch`, {
+          params: { keyword: keyword },
+        });
         if (res2.status === 200) {
-          const res3 = await axios.get(`/api/bestReviewsItemSearch/${keyword}`);
-          if (res3.status === 200) {
-            mergedList = [...mergedList, ...res3.data]; // 데이터 추가
-            const res4 = await axios.get(
-              `/api/bestReviewsItemMatchingPost/${keyword}`
-            );
-            if (res4.status === 200) {
-              const res5 = await axios.get(`/api/bestPetsBoardSearch`, {
-                param: { content: keyword },
-              });
-              if (res5.status === 200) {
-                mergedList = [...mergedList, ...res5.data]; // 데이터 추가
-              }
-            }
-          }
+          res2.data.forEach((item) => mergedSet.add(item)); // 중복 제거를 위해 Set에 추가
         }
       }
 
-      setList(mergedList);
+      const uniqueMergedList = [...mergedSet]; // Set을 다시 배열로 변환
+      setList(uniqueMergedList);
+      setPage(Math.ceil(uniqueMergedList.length / 12));
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getList();
-  }, []);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (list === null) return null;
   return (
     <div>
       <ScrollToTop />

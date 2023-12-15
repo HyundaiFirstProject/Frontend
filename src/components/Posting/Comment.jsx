@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserIMG from "components/UserProfile/userIMG";
 import "assets/CSS/Posts/Comments.css";
 import { PiHeartThin } from "react-icons/pi";
-import { PiHeartFill } from "react-icons/pi";
-//import DateCheck from "utils/DateCheck";
+import DateCheck from "utils/DateCheck";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import useUserInfo from "hooks/LoginHooks/useUserInfo";
@@ -185,8 +184,18 @@ const Comments = React.forwardRef(({ props, status }, ref) => {
           <div key={idx} id="comment_div">
             <div className="useIMGCOMM_bottom">
               <p>{com.writer}</p>
-              <button onClick={() => deleteComment(com.rno)}>삭제</button>
               <button
+                className={
+                  user.nickname === com.writer ? "" : "invisibleButton"
+                }
+                onClick={() => deleteComment(com.rno)}
+              >
+                삭제
+              </button>
+              <button
+                className={
+                  user.nickname === com.writer ? "" : "invisibleButton"
+                }
                 id="button2_comment"
                 onClick={() => {
                   const newIsEditing = [...isEditing];
@@ -229,7 +238,6 @@ const Comments = React.forwardRef(({ props, status }, ref) => {
             <div className="useIMGCOMM_bottom2">
               <p className="comment_likes_P">{com.reply}</p>
               <div className="comment_likes">
-                {/* <div>{DateCheck(com.updatedate)}</div> */}
                 {heart && (
                   <PiHeartThin
                     className="heart-thin-animation2"
@@ -238,15 +246,16 @@ const Comments = React.forwardRef(({ props, status }, ref) => {
                     }}
                   />
                 )}
-                {!heart && (
-                  <PiHeartFill
-                    className="heart-fill-animation2"
-                    onClick={() => {
-                      setHeart(!heart);
-                    }}
-                  />
-                )}
-                <div>{com.likes}</div>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  marginTop: "-2rem",
+                }}
+              >
+                {DateCheck(com.updatedate)}
               </div>
             </div>
           </div>

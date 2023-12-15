@@ -21,18 +21,20 @@ const ListItem = ({ props }) => {
   );
   useEffect(() => {
     const getUserInfo = async () => {
-      try {
-        const res = await axios.get(`/api/getUserInfoProfile/${props.user_no}`);
-        setUserInfo(res.data);
-      } catch (error) {
-        return false;
-      }
+      if (props.user_no !== undefined && props.user_no !== null)
+        try {
+          const res = await axios.get(
+            `/api/getUserInfoProfile/${props.user_no}`
+          );
+          setUserInfo(res.data);
+        } catch (error) {
+          return false;
+        }
     };
 
     getUserInfo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  if (user === null) return null;
+  }, [props]);
+  if (user === null && props.user_no === undefined) return null;
   return (
     <div className="ListItem">
       {props.itemid !== undefined && (
@@ -47,12 +49,16 @@ const ListItem = ({ props }) => {
         </a>
       )}
       <div className="ListItemIMG_Container">
-        {props.itemid !== undefined && (
-          <img src={props.img[0]} alt={props.title} />
-        )}
-        {props.itemid === undefined && (
-          <img src={props.photo[0]} alt={props.title} />
-        )}
+        {props.itemid !== undefined &&
+          props.img[0] !== undefined &&
+          props.title !== undefined && (
+            <img src={props.img[0]} alt={props.title} />
+          )}
+        {props.itemid === undefined &&
+          props.photo[0] !== undefined &&
+          props.title !== undefined && (
+            <img src={props.photo[0]} alt={props.title} />
+          )}
       </div>
       <div className="List_title">
         {props.itemid === undefined && (
@@ -106,7 +112,9 @@ const ListItem = ({ props }) => {
             {props.stars}
           </p>
         )}
-        <p className="title">{truncateText(props.title, 17)}</p>
+        {props.title !== undefined && (
+          <p className="title">{truncateText(props.title, 17)}</p>
+        )}
       </div>
       <div className="List_user_writer">
         <UserIMG props={{ img_url: userInfo }} className="userimg_List" />
