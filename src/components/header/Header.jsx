@@ -21,8 +21,8 @@ const Header = () => {
     navigate(`/search/${string}`, { state: string });
   };
 
-  const isLog = localStorage.getItem("isLoged");
-
+  let isLog = false;
+  if (localStorage.getItem("isLoged") === true) isLog = true;
   //if (user === null) return null;
   return (
     <div className=" header">

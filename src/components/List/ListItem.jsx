@@ -10,16 +10,25 @@ import { PiFishSimple, PiCat } from "react-icons/pi";
 import { VscSnake } from "react-icons/vsc";
 import { MdOutlinePets } from "react-icons/md";
 import useUserInfo from "hooks/LoginHooks/useUserInfo";
-import { itemList } from "index.js";
 import { useEffect, useState } from "react";
 import axios from "axios";
 const ListItem = ({ props }) => {
   const [userInfo, setUserInfo] = useState();
   const user = useUserInfo();
+  const [itemList, setItemList] = useState([]);
   const foundItem = itemList.find(
     (item) => item.product_id === parseInt(props.itemid)
   );
   useEffect(() => {
+    const getItemList = async () => {
+      try {
+        const res = await axios.get(`/api/bestReviewsProductList/`);
+        if (res.status === 200) setItemList(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getItemList();
     const getUserInfo = async () => {
       if (props.user_no !== undefined && props.user_no !== null)
         try {
@@ -34,7 +43,12 @@ const ListItem = ({ props }) => {
 
     getUserInfo();
   }, [props]);
-  if (user === null && props.user_no === undefined) return null;
+  if (user === null || props.user_no === undefined) return null;
+  if (
+    props.itemid !== undefined &&
+    (foundItem === null || foundItem === undefined)
+  )
+    return null;
   return (
     <div className="ListItem">
       {props.itemid !== undefined && (

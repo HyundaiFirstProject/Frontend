@@ -11,7 +11,7 @@ import axios from "axios";
 const ListPets = () => {
   const [page, setPage] = useState();
   const user = useUserInfo();
-  const [list, setList] = useState();
+  const [list, setList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const getList = async () => {
     try {
@@ -36,19 +36,16 @@ const ListPets = () => {
     getList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   if (page === null || user === null || list === null) return null;
   return (
     <div>
       <ScrollToTop />
       <Header />
       <div className="ListContainer">
-        {list !== undefined && (
-          <ListLayout
-            props={list.slice((currentPage - 1) * 12, currentPage * 12)}
-            state="pets"
-          />
-        )}
+        <ListLayout
+          props={list.slice((currentPage - 1) * 12, currentPage * 12)}
+          state="pets"
+        />
       </div>
       <div className="ListPaging">
         <Paging

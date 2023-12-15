@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import "assets/CSS/Upload/ItemInfo.css";
 import { BsFillQuestionSquareFill } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
-import { itemList } from "index.js";
-
+import axios from "axios";
 const filterItemsByKeyword = (keyword, itemList) => {
   keyword = !keyword ? "" : keyword;
   let itemFilter = itemList.filter(
@@ -15,10 +14,21 @@ const filterItemsByKeyword = (keyword, itemList) => {
 };
 const ItemInfo = ({ onCheck }) => {
   const [keyword, setkey] = useState("");
+  const [itemList, setItemList] = useState([]);
   const [filteredItems, setFilteredItems] = useState(itemList); // 검색어에 따라 필터링된 아이템
   useEffect(() => {
+    const getItemList = async () => {
+      try {
+        const res = await axios.get(`/api/bestReviewsProductList/`);
+        if (res.status === 200) setItemList(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getItemList();
+
     setFilteredItems(filterItemsByKeyword(keyword, itemList));
-  }, [keyword]);
+  }, [keyword, itemList]);
 
   const [isDivVisible, setIsDivVisible] = useState(true);
   const [isEntered, setIsEntered] = useState(false);
