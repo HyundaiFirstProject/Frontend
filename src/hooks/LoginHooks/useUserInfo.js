@@ -4,7 +4,7 @@ const useUserInfo = () => {
   const [user, setUser] = useState(null);
   const { getWithCredentials } = useGet();
   useEffect(() => {
-    if (localStorage.getItem("isLoged")) {
+    if (localStorage.getItem("isLoged") === true) {
       const cookieString = document.cookie;
       const cookies = cookieString.split(";");
       const parsedCookies = {};

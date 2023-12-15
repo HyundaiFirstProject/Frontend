@@ -3,7 +3,6 @@ import Header from "components/header/Header";
 import Footer from "components/footer/Footer";
 import ImgPosts from "components/Posting/ImgPosts";
 import DateCheck from "utils/DateCheck";
-import { itemList } from "index.js";
 import "assets/CSS/Posts/Posts.css";
 import UserIMG from "components/UserProfile/userIMG";
 import SideBar from "components/Posting/SideBar";
@@ -29,6 +28,7 @@ const Posts = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const postInfo = location.state;
+  const [itemList, setItemList] = useState([]);
   const foundItem = itemList.find(
     (item) => item.product_id === parseInt(postInfo.itemid)
   );
@@ -48,6 +48,15 @@ const Posts = () => {
   const status = postInfo.itemid === undefined ? "list-pets" : "list-review";
   const commentRef = useRef(null);
   useEffect(() => {
+    const getItemList = async () => {
+      try {
+        const res = await axios.get(`/api/bestReviewsProductList/`);
+        if (res.status === 200) setItemList(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getItemList();
     const getUserInfo = async () => {
       try {
         const res = await axios.get(
@@ -133,7 +142,8 @@ const Posts = () => {
       }
     }
   };
-  if (user === null) return null;
+  if (user === null || foundItem === null || foundItem === undefined)
+    return null;
   return (
     <div id="Posts">
       {modal !== "close" && (
