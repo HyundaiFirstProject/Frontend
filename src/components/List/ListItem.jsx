@@ -89,13 +89,17 @@ const ListItem = ({ props }) => {
             {props.pettype === "설치류" && (
               <p>
                 <LuRat />
-                설치·토끼류
+                설치
+                <br />
+                토끼류
               </p>
             )}
             {props.pettype === "파충류/양서류" && (
               <p>
                 <VscSnake />
-                파충류·양서류
+                파충류
+                <br />
+                양서류
               </p>
             )}
             {props.pettype === "기타" && (
