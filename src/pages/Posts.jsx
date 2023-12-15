@@ -1,41 +1,40 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "components/header/Header";
 import Footer from "components/footer/Footer";
 import ImgPosts from "components/Posting/ImgPosts";
-import DateCheck from "utils/DateCheck";
+//import DateCheck from "utils/DateCheck";
+import { itemList } from "index.js";
 import "assets/CSS/Posts/Posts.css";
 import UserIMG from "components/UserProfile/userIMG";
 import SideBar from "components/Posting/SideBar";
 import Comment from "components/Posting/Comment";
+import truncateText from "utils/truncateText.js";
 import { FaStar } from "react-icons/fa";
 import { useRef } from "react";
+import { LuBird, LuDog, LuRat } from "react-icons/lu";
+import { PiFishSimple, PiCat } from "react-icons/pi";
+import { VscSnake } from "react-icons/vsc";
+import { MdOutlinePets } from "react-icons/md";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import useGet from "hooks/axiosWithCredentials/useGet";
+import useUserInfo from "hooks/LoginHooks/useUserInfo";
+import AlertModal from "components/Modal/AlertModal";
+import axios from "axios";
 //import content1 from "assets/dummyForTest/content.text";
 const Posts = () => {
-  const { postID } = useParams();
+  const user = useUserInfo();
+  const [modal, setModal] = useState("close");
+  //const { postID } = useParams();
   const navigate = useNavigate();
-  const postInfo = {
-    id: 13,
-    title: "제목제목zzzz 제목",
-    img: [
-      "https://img.allurekorea.com/allure/2023/08/style_64d0bb3f18816-525x700.jpg",
-      "https://cdn.jejusori.net/news/photo/202210/408666_414268_125.jpg",
-      "https://img.allurekorea.com/allure/2023/08/style_64d0b9fd307d8-525x700.jpg",
-    ],
-    date: "2023-12-10-18-57",
-    type: "cat",
-    view: 20,
-    likes: 16,
-    userID: 1,
-    product: "아이ss",
-    star: 3.5,
-    content: "",
-  };
-  const userInfo = {
-    nickname: "ㅎsefdsfsdㅎㅎs",
-    //"false",
-    img_url:
-      "https://www.apple.com/newsroom/images/2023/11/taylor-swift-is-apple-musics-artist-of-the-year-for-2023/tile/Apple-Music-Awards-Artist-of-the-Year-Taylor-Swift.jpg.news_app_ed.jpg",
-  };
+  const location = useLocation();
+  const postInfo = location.state;
+  const foundItem = itemList.find(
+    (item) => item.product_id === parseInt(postInfo.itemid)
+  );
+  const [userInfo, setUserInfo] = useState();
+  const { getWithCredentials } = useGet();
+  const [isLike, setIsLike] = useState(true);
   const scrollToComments = () => {
     const element = commentRef.current;
     const rect = element.getBoundingClientRect();
@@ -46,60 +45,150 @@ const Posts = () => {
       behavior: "smooth",
     });
   };
-  const status = postInfo.product === undefined ? "list-pets" : "list-review";
+  const status = postInfo.itemid === undefined ? "list-pets" : "list-review";
   const commentRef = useRef(null);
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const res = await axios.get(
+          `/api/getUserInfoProfile/${postInfo.user_no}`
+        );
+        setUserInfo(res.data);
+      } catch (error) {
+        return false;
+      }
+    };
+    const getPets = async () => {
+      try {
+        const res = await getWithCredentials(`/api/bestPetsDetail`, {
+          bno: postInfo.bno,
+        });
+        console.log(res);
+      } catch (error) {}
+    };
+    const getReview = async () => {
+      try {
+        const res = await getWithCredentials(
+          `/api/bestReviewsDetail/${postInfo.postid}`
+        );
+        if (res.find((item) => item.use_no === user.user_no) === undefined)
+          setIsLike(false);
+        console.log(res);
+      } catch (error) {}
+    };
 
+    const getLikesReview = async () => {
+      try {
+        const res = await getWithCredentials(
+          `/api/bestReviewsLikedList/${postInfo.postid}`
+        );
+        console.log(res);
+      } catch (error) {}
+    };
+
+    const getLikesPets = async () => {
+      try {
+        const res = await getWithCredentials(
+          `/api/bestPetsLikedList/${postInfo.bno}`
+        );
+        console.log(res);
+      } catch (error) {}
+    };
+    getUserInfo();
+    if (status === "list-review") {
+      getReview();
+      getLikesReview();
+    } else {
+      getPets();
+      getLikesPets();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const deletePost = async () => {
+    if (status === "list-pets") {
+      try {
+        const res = await axios.delete(`/api/bestPetsDelete/${postInfo.bno}`);
+        console.log(res);
+        if (res.status === 200) {
+          alert("삭제되었습니다.");
+          navigate("/list-pets/1");
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const res = await axios.delete(
+          `/api/bestReviewsDelete/${postInfo.postid}`
+        );
+        console.log(res);
+        if (res.status === 200) {
+          alert("삭제되었습니다.");
+          navigate("/list-review/1");
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+  if (user === null) return null;
   return (
     <div id="Posts">
+      {modal !== "close" && (
+        <AlertModal alertString={modal} onClose={() => setModal("close")} />
+      )}
       <Header />
-      <SideBar props={postInfo} onScroll={scrollToComments} />
+      <SideBar props={postInfo} onScroll={scrollToComments} isLike={!isLike} />
       <div id="postInfoSub">
         <div id="postInfouserInfo">
-          <UserIMG props={userInfo} className="posting" />
+          <UserIMG props={{ img_url: userInfo }} className="posting" />
           <div id="postInfouserInfo_text">
-            <p>{userInfo.nickname}</p>
-            <div>{DateCheck(postInfo.date)}</div>
+            <p>{postInfo.writer}</p>
+            {/* <div>{DateCheck(postInfo.updatedate)}</div> */}
           </div>
         </div>
         {status === "list-review" && (
           <div id="item_post">
             <a
-              href="https://react-icons.github.io/react-icons/search/#q=star"
+              href={foundItem.url}
               target="_blank" // 링크가 새 탭에서 열리도록 설정
               rel="noopener noreferrer"
             >
-              <img
-                src="https://cache.umusic.com/_sites/_halo/zrskt/tte/thmdebam.jpg"
-                alt=""
-              />
-              <p>{postInfo.product}</p>
+              <img src={foundItem.img} alt="" />
+              <p>{truncateText(foundItem.product_name, 12)}</p>
             </a>
           </div>
         )}
         <div id="postView">
-          <p> 조회수</p> <p>{postInfo.view}</p>
+          <p> 조회수</p> {postInfo.photo !== null && <p>{postInfo.views}</p>}
+          {postInfo.img !== null && <p>{postInfo.view}</p>}
         </div>
       </div>
-      <ImgPosts props={postInfo.img} />
+      {postInfo.photo !== null && <ImgPosts props={postInfo.photo} />}
+      {postInfo.img !== null && <ImgPosts props={postInfo.img} />}
       <div id="postInfoTop">
         {status === "list-pets" && (
           <div id="postInfoType">
-            {postInfo.type === "cat" && <p> 🐱 </p>}
-            {postInfo.type === "dog" && <p>🐶 </p>}
-            {postInfo.type === "bird" && <p>🐥 </p>}
-            {postInfo.type === "fish" && <p> 🐟 </p>}
-            {postInfo.type === "설치류" && <p> 🐹 </p>}
-            {postInfo.type === "파충류/양서류" && <p>🦖 </p>}
-            {postInfo.type === "기타" && <p>🐉 </p>}
+            <p style={{ paddingTop: "0.75rem" }}>
+              {postInfo.pettype === "cat" && <PiCat />}
+              {postInfo.pettype === "dog" && <LuDog />}
+              {postInfo.pettype === "bird" && <LuBird />}
+              {postInfo.pettype === "fish" && <PiFishSimple />}
+              {postInfo.pettype === "설치류" && <LuRat />}
+              {postInfo.pettype === "파충류/양서류" && <VscSnake />}
+              {postInfo.pettype === "기타" && <MdOutlinePets />}
+            </p>
           </div>
         )}
         {status === "list-review" && (
           <div id="postInfoStar">
             <FaStar />
             <p>
-              {Number.isInteger(postInfo.star)
-                ? postInfo.star.toFixed(1)
-                : postInfo.star}
+              {Number.isInteger(postInfo.stars)
+                ? postInfo.stars.toFixed(1)
+                : postInfo.stars}
             </p>
           </div>
         )}
@@ -109,21 +198,42 @@ const Posts = () => {
         >
           <p> {postInfo.title}</p>
           <button
+            className={
+              postInfo.user_no === user.user_no ? "" : "invisibleButton"
+            }
             onClick={(e) => {
-              navigate(`/upload/${status}/${postID}`, {
-                state: { postInfo },
-              });
+              navigate(
+                postInfo.bno === undefined
+                  ? `/upload/${status}/${postInfo.postid}`
+                  : `/upload/${status}/${postInfo.bno}`,
+                {
+                  state: { postInfo },
+                }
+              );
             }}
           >
             수정
+          </button>
+          <button
+            className={
+              postInfo.user_no === user.user_no ? "" : "invisibleButton"
+            }
+            onClick={deletePost}
+            style={{ backgroundColor: "#8080807d", marginLeft: "0.5rem" }}
+          >
+            삭제
           </button>
         </div>
       </div>
       <div id="postContent">
         <div dangerouslySetInnerHTML={{ __html: postInfo.content }}></div>
       </div>
-      <Comment ref={commentRef} />
-      <Footer props={postInfo.id} />
+      <Comment
+        ref={commentRef}
+        props={status === "list-review" ? postInfo.postid : postInfo.bno}
+        status={status}
+      />
+      <Footer props={postInfo.bno} />
     </div>
   );
 };

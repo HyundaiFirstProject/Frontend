@@ -1,34 +1,38 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Routing from "pages/Routing";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "store/Redux/rootReducer";
-// import { setItems } from "store/Redux/ItemReducer"; // Adjust the path based on your file structure
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import axios from "axios";
 
-// import axios from "axios";
-// import serverURL from "store/Server/ServerURL";
-// const url = serverURL();
+let itemList;
 
-const store = configureStore({
-  reducer: rootReducer,
-});
+axios
+  .get(`/api/bestReviewsProductList/`)
+  .then((response) => {
+    //console.log(response);
+    itemList = response.data;
+    initApp(); // 데이터를 받아온 후에 앱 초기화
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
-// axios
-//   .get(`${url}/api/bestReviewsProductList/`)
-//   .then((response) => {
-//     store.dispatch(setItems(response.data)); // API로 받은 데이터를 스토어에 설정
-//     renderApp(); // 데이터를 받아온 후에 앱을 렌더링
-//   })
-//   .catch((error) => {
-//     // 에러 처리
-//   });
+function initApp() {
+  renderApp();
+}
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <Provider store={store}>
-    <Routing />
-  </Provider>
-);
+function renderApp() {
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(
+    <div>
+      <GoogleOAuthProvider
+        clientId={process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}
+        onScriptLoadError={() => console.log("구글 연동 실패")}
+      >
+        <Routing />
+      </GoogleOAuthProvider>
+    </div>
+  );
+}
 
-export default store;
+export { itemList };

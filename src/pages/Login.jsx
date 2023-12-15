@@ -1,12 +1,17 @@
 import "assets/CSS/Login.css";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState, useRef } from "react";
-import serverURL from "store/Server/ServerURL";
 import usePost from "hooks/axiosWithCredentials/usePost";
 import InputCSS from "components/SignUp/InputCSS";
+import AlertModal from "components/Modal/AlertModal";
+import { GoogleLogin } from "@react-oauth/google";
+import { FcGoogle } from "react-icons/fc";
+import { jwtDecode } from "jwt-decode";
+import EmailConfirm from "utils/signUpUtils/EmailConfirm";
+import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
-  const url = serverURL();
+  const [modal, setModal] = useState("close");
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -18,27 +23,58 @@ const Login = () => {
   useEffect(() => {
     localStorage.clear();
   }, []); //로그인 페이지 들어오면 로그인 무조건 해제
+
   const handleSubmit = (e) => {
     e.preventDefault();
     tryLogin();
   };
 
   const tryLogin = async () => {
-    console.log(`${url}/api/login/`, userInfo);
     try {
-      const res = await postWithCredentials(`${url}/api/login`, userInfo);
-      console.log(res); // 응답 데이터 사용
-      if (res.status !== 200) {
-        //실패모달 창 띄우기
+      const res = await postWithCredentials(`/api/login`, userInfo);
+      if (res.status === "200") {
+        navigate("/callback");
       }
     } catch (error) {
-      //모달 창 띄우기
-      // 에러 처리
+      setModal("로그인에 실패했습니다. 다시 확인해주세요");
     }
+  };
+
+  const tryGoogle = async (token) => {
+    try {
+      const isUser = await EmailConfirm(token.email); //중복 확인으로 이미 회원인지 확인
+      if (isUser) {
+        try {
+          const signUP = await axios.post("/api/signup", {
+            nickname: `user${token.jti.substring(0, 5)}`,
+            email: token.email,
+            password: "구글연동회원",
+          });
+          if (signUP.status !== "200")
+            setModal("연동에 실패했습니다. 다시 시도해주세요");
+        } catch (e) {
+          setModal("연동에 실패했습니다. 다시 시도해주세요");
+        }
+      }
+      try {
+        const res = await postWithCredentials(`/api/login`, {
+          email: token.email,
+          password: "구글연동회원",
+        });
+        if (res.status === "200") {
+          navigate("/callback");
+        }
+      } catch (error) {
+        setModal("로그인에 실패했습니다. 다시 확인해주세요");
+      }
+    } catch (error) {}
   };
 
   return (
     <div className="container_Login">
+      {modal !== "close" && (
+        <AlertModal alertString={modal} onClose={() => setModal("close")} />
+      )}
       <div className="LogIn_Name">Pet & E</div>
       <form className="input_LOG" onSubmit={handleSubmit}>
         <InputCSS
@@ -62,6 +98,22 @@ const Login = () => {
           }}
         />
         <button className="LogInBTN">로그인</button>
+        <div className="googleBTN">
+          <div className="visibleGOOGLE">
+            <FcGoogle />
+            Google 로그인
+          </div>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              const token = jwtDecode(credentialResponse.credential);
+              tryGoogle(token);
+            }}
+            onError={() => {
+              setModal("로그인에 실패했습니다. 다시 시도해주세요");
+              console.log("Login Failed");
+            }}
+          ></GoogleLogin>
+        </div>
         <div className="bottomBTN">
           <button
             className="goToNewPW"

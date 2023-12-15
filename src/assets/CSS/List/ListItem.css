@@ -48,18 +48,35 @@
   width: 5rem;
   position:absolute;
   font-weight: 900;
-  left: 0.4rem;
-  top:1rem;
+  left: 2rem;
+  top: 0.9rem;
   margin: 0;
+}
+.List_title .subList_Title svg{
+  background-color: rgb(30,157,130);
+  color: white;
+  padding: 0.2rem;
+  border-radius: 50%;
+  position: absolute;
+  top: -0.2rem;
+    left: -1.5rem;
 }
 .List_title .subList_Title_star{
   color:rgb(30,157,130);
   width: 5rem;
   position:absolute;
   font-weight: 900;
-  left: 1.2rem;
-  top:0rem;
+  left: 2.2rem;
+  top:1rem;
   margin: 0;
+}
+.List_title .subList_Title_star svg{
+  color: rgb(241, 241, 123);
+  position: absolute;
+  top: -0.15rem;
+    left: -1.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
 }
 .List_user_writer{
   display: flex;

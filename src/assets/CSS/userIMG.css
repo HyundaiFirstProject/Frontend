@@ -1,8 +1,8 @@
 .userimg_myPage_container{
-  width: 14rem;
-    justify-content: center;
-    align-items: center;
-    display: flex;
+  width: 42rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
 .userimg_myPage_container svg{
   color: rgba(30,157,130,0.5);
@@ -22,8 +22,13 @@
     background-color: rgba(0, 0, 0, 0.114);
 }
 .userimg_myPage img{
-  padding: 1rem;
+  
+  object-fit: cover;
+  padding: 0rem;
+  margin-top:0.15rem;
   background-color: white;
+  width: 7.5rem;
+  height: 7.5rem;
 }
 .userIcon{
   width: 2.2rem;
@@ -41,6 +46,7 @@
 }
 .userIcon img{
   margin-bottom: 2rem;
+  object-fit: cover;
   margin-top: 0;
 }
 .List_user_writer .userimg_List{
@@ -48,6 +54,11 @@
   height: 1.25rem;
   border-radius: 0.25rem;
   transition: none;
+}
+.List_user_writer .userimg_List img{
+  width: 1.25rem;
+  height: 1.25rem;
+  object-fit: cover;
 }
 .userimg_List:hover{
   width: 1.25rem;
@@ -128,4 +139,5 @@
   }
   .userimg_myPage_upload img{
     background-color: white;
+    object-fit: cover;
   }

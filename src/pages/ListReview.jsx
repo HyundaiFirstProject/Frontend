@@ -1,24 +1,64 @@
 import React from "react";
 import ListLayout from "components/List/ListLayout";
-import dummy from "assets/dummyForTest/dummy_review.json";
 import Header from "components/header/Header";
 import Footer from "components/footer/Footer";
 import Paging from "components/Paging/Paging";
 import "assets/CSS/List/List.css";
 import ScrollToTop from "utils/ScrollToTop";
+import { useEffect, useState } from "react";
+import useUserInfo from "hooks/LoginHooks/useUserInfo";
+import axios from "axios";
 const ListReview = () => {
-  //const page = 12;
-  //const url = window.location.href;
-  //const currentPage = url.match(/\d+$/)[0];
+  const [page, setPage] = useState();
+  const [list, setList] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const user = useUserInfo();
+
+  const getList = async () => {
+    try {
+      const res = await axios.get(`/api/bestReviewsList`);
+      console.log(res);
+      if (res.status === 200) setList(res.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    const getPage = async () => {
+      try {
+        const res = await axios.get(`/api/bestReviewsTotalPages`);
+        console.log(res);
+        if (res.status === 200) setPage(res.data.end);
+        else console.log("error 발생");
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getPage();
+    getList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (page === null || user === null || list === null) return null;
   return (
     <div>
       <ScrollToTop />
       <Header />
       <div className="ListContainer">
-        <ListLayout props={dummy} />
+        {list !== undefined && <ListLayout props={list} state="review" />}
       </div>
       <div className="ListPaging">
-        <Paging props={12} currentPage={9} className="List_paging" />
+        <Paging
+          props={page}
+          currentPage={currentPage}
+          className="List_paging"
+          onMove={(dir) => {
+            setCurrentPage((prev) => {
+              const nextPage = prev + dir;
+              return nextPage < 1 ? 1 : nextPage > page ? page : nextPage;
+            });
+          }}
+        />
       </div>
       <Footer />
     </div>

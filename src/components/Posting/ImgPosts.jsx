@@ -4,7 +4,6 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
 const ImgPosts = ({ props }) => {
   const [currentIMG, setCurrentIMG] = useState(0);
-
   const nextIMG = () => {
     setCurrentIMG((prev) => (prev === props.length - 1 ? 0 : prev + 1));
   };
@@ -15,6 +14,8 @@ const ImgPosts = ({ props }) => {
   const IMGStyle = {
     transform: `translateX(-${currentIMG * 100}%)`, // 배너 이동을 위한 transform 추가
   };
+
+  if (props === undefined) return null;
 
   return (
     <div className="ImgPosts">

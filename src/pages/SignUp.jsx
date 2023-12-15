@@ -6,9 +6,13 @@ import InputCSS from "components/SignUp/InputCSS";
 import emailCheck from "utils/signUpUtils/emailCheck";
 import pwConfirm from "utils/signUpUtils/pwConfirm";
 import NicknameConfirm from "utils/signUpUtils/NicknameConfirm";
-//import EmailConfirm from "utils/signUpUtils/EmailConfirm";
+import EmailConfirm from "utils/signUpUtils/EmailConfirm";
 import EmailSend from "utils/signUpUtils/EmailSend";
 import AlertModal from "components/Modal/AlertModal";
+import { GoogleLogin } from "@react-oauth/google";
+import { FcGoogle } from "react-icons/fc";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 const SignUp = () => {
   const navigate = useNavigate();
   const { postWithCredentials } = usePost();
@@ -48,31 +52,33 @@ const SignUp = () => {
   };
   const handleEmailConfirm = async (e) => {
     e.preventDefault();
-    const isNotDup = true;
-    //EmailConfirm(userInfo.email); //중복 확인
-
     setModal("loading");
     if (status.email !== "인증번호O") {
-      if (isNotDup) {
-        const rand = Math.floor(100000 + Math.random() * 900000);
-        setRandNum(rand);
-        try {
-          const isSended = await EmailSend(userInfo.email, rand);
-          if (isSended) {
-            setStatus((prev) => ({ ...prev, email: "전송완료" }));
-            setModal("이메일 전송에 성공하였습니다. 인증번호를 입력해주세요.");
-          } else setModal("이메일 전송에 실패하였습니다. 다시 시도해주세요.");
-        } catch (error) {
-          console.error("Error sending email:", error);
-          setModal("이메일 전송 중 오류가 발생했습니다.");
-        }
-      } else setModal("이미 가입된 이메일입니다.");
+      try {
+        const isNotDup = await EmailConfirm(userInfo.email);
+        if (isNotDup) {
+          const rand = Math.floor(100000 + Math.random() * 900000);
+          setRandNum(rand);
+          try {
+            const isSended = await EmailSend(userInfo.email, rand);
+            if (isSended) {
+              setStatus((prev) => ({ ...prev, email: "전송완료" }));
+              setModal(
+                "이메일 전송에 성공하였습니다. 인증번호를 입력해주세요."
+              );
+            } else setModal("이메일 전송에 실패하였습니다. 다시 시도해주세요.");
+          } catch (error) {
+            console.error("Error sending email:", error);
+            setModal("이메일 전송 중 오류가 발생했습니다.");
+          }
+        } else setModal("이미 가입된 이메일입니다.");
+      } catch (error) {
+        console.error("Error sending email:", error);
+        setModal("이메일 검증 중 오류가 발생했습니다.");
+      }
     } else setModal("이미 인증을 완료하셨습니다.");
   };
 
-  // const onClose = () => {
-  //   setModal("close");
-  // };
   const handleEmailAuthoConfirm = (e) => {
     e.preventDefault();
     if (parseInt(emailAuthoNum) === randNum) {
@@ -91,14 +97,44 @@ const SignUp = () => {
       const res = await postWithCredentials(`/api/signup/`, userInfo);
       console.log(res); // 응답 데이터 사용
       if (res.status === "200") {
+        setModal("가입되셨습니다. 로그인 해주세요.");
         navigate("/login");
       } else {
-        //모달 창 띄우기
+        setModal("가입에 실패했습니다. 다시 시도해주세요.");
       }
     } catch (error) {
-      //모달 창 띄우기
-      // 에러 처리
+      setModal("가입에 실패했습니다. 다시 시도해주세요.");
     }
+  };
+
+  const tryGoogle = async (token) => {
+    try {
+      const isUser = await EmailConfirm(token.email); //중복 확인으로 이미 회원인지 확인
+      if (isUser) {
+        try {
+          const signUP = await axios.post("/api/signup", {
+            nickname: `user${token.jti.substring(0, 5)}`,
+            email: token.email,
+            password: "구글연동회원",
+          });
+          if (signUP.status !== "200")
+            setModal("연동에 실패했습니다. 다시 시도해주세요");
+        } catch (e) {
+          setModal("연동에 실패했습니다. 다시 시도해주세요");
+        }
+      }
+      try {
+        const res = await postWithCredentials(`/api/login`, {
+          email: token.email,
+          password: "구글연동회원",
+        });
+        if (res.status === "200") {
+          navigate("/callback");
+        }
+      } catch (error) {
+        setModal("로그인에 실패했습니다. 다시 확인해주세요");
+      }
+    } catch (error) {}
   };
   return (
     <div className="container_Login">
@@ -241,7 +277,24 @@ const SignUp = () => {
         >
           회원가입
         </button>
+        <div className="googleBTN">
+          <div className="visibleGOOGLE">
+            <FcGoogle />
+            <p style={{ color: "black" }}>Google 로그인</p>
+          </div>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              const token = jwtDecode(credentialResponse.credential);
+              tryGoogle(token);
+            }}
+            onError={() => {
+              setModal("로그인에 실패했습니다. 다시 시도해주세요");
+              console.log("Login Failed");
+            }}
+          ></GoogleLogin>
+        </div>
       </form>
+
       {modal !== "close" && (
         <AlertModal alertString={modal} onClose={() => setModal("close")} />
       )}

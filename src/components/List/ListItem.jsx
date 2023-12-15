@@ -4,57 +4,122 @@ import truncateText from "utils/truncateText.js";
 import { GoHeart } from "react-icons/go";
 import { FaRegEye } from "react-icons/fa6";
 import { PiBookmarkSimpleThin } from "react-icons/pi";
+import { FaStar } from "react-icons/fa6";
+import { LuBird, LuDog, LuRat } from "react-icons/lu";
+import { PiFishSimple, PiCat } from "react-icons/pi";
+import { VscSnake } from "react-icons/vsc";
+import { MdOutlinePets } from "react-icons/md";
+import useUserInfo from "hooks/LoginHooks/useUserInfo";
+import { itemList } from "index.js";
+import { useEffect, useState } from "react";
+import axios from "axios";
 const ListItem = ({ props }) => {
-  const user = {
-    no: 1,
-    nickname: "닉네임",
-    user_like_pets_num: 0,
-    user_like_review_num: 0,
-    //img_url: "false",
-    img_url:
-      "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
-  };
+  const [userInfo, setUserInfo] = useState();
+  const user = useUserInfo();
+  const foundItem = itemList.find(
+    (item) => item.product_id === parseInt(props.itemid)
+  );
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const res = await axios.get(`/api/getUserInfoProfile/${props.user_no}`);
+        setUserInfo(res.data);
+      } catch (error) {
+        return false;
+      }
+    };
+
+    getUserInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (user === null) return null;
   return (
     <div className="ListItem">
-      {props.product !== undefined && (
-        <div className="productList">
-          <img src={props.productIMG} alt="" />
-          <p>{props.product}</p>
-        </div>
+      {props.itemid !== undefined && (
+        <a
+          className="productList"
+          href={foundItem.url !== undefined ? foundItem.url : ""}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src={foundItem.img} alt="" />
+          <p>{truncateText(foundItem.product_name, 15)}</p>
+        </a>
       )}
       <div className="ListItemIMG_Container">
-        <img src={props.img} alt={props.title} />
+        {props.itemid !== undefined && (
+          <img src={props.img[0]} alt={props.title} />
+        )}
+        {props.itemid === undefined && (
+          <img src={props.photo[0]} alt={props.title} />
+        )}
       </div>
       <div className="List_title">
-        {props.product === undefined && (
+        {props.itemid === undefined && (
           <div className="subList_Title">
-            {props.type === "cat" && <p> 🐱고양이 </p>}
-            {props.type === "dog" && <p>🐶강아지 </p>}
-            {props.type === "bird" && <p>🐥새 </p>}
-            {props.type === "fish" && <p> 🐟물고기 </p>}
-            {props.type === "설치류" && <p> 🐹설치·토끼류 </p>}
-            {props.type === "파충류/양서류" && <p>🦖파충류·양서류 </p>}
-            {props.type === "기타" && <p>🐉기타동물 </p>}
+            {props.pettype === "cat" && (
+              <p>
+                <PiCat />
+                고양이
+              </p>
+            )}
+            {props.pettype === "dog" && (
+              <p>
+                <LuDog />
+                강아지
+              </p>
+            )}
+            {props.pettype === "bird" && (
+              <p>
+                <LuBird />새
+              </p>
+            )}
+            {props.pettype === "fish" && (
+              <p>
+                <PiFishSimple />
+                물고기
+              </p>
+            )}
+            {props.pettype === "설치류" && (
+              <p>
+                <LuRat />
+                설치·토끼류
+              </p>
+            )}
+            {props.pettype === "파충류/양서류" && (
+              <p>
+                <VscSnake />
+                파충류·양서류
+              </p>
+            )}
+            {props.pettype === "기타" && (
+              <p>
+                <MdOutlinePets />
+                기타동물
+              </p>
+            )}
           </div>
         )}
-        {props.product !== undefined && (
+        {props.itemid !== undefined && (
           <p className="subList_Title_star">
-            <p>⭐️{props.star}</p>
+            <FaStar />
+            {props.stars}
           </p>
         )}
         <p className="title">{truncateText(props.title, 17)}</p>
       </div>
       <div className="List_user_writer">
-        <UserIMG props={user} className="userimg_List" />
+        <UserIMG props={{ img_url: userInfo }} className="userimg_List" />
         <p>{props.writer}</p>
       </div>
       <div className="List_watch_likes">
-        {props.product === undefined && <GoHeart />}
-        {props.product !== undefined && <PiBookmarkSimpleThin />}
+        {props.itemid === undefined && <GoHeart />}
+        {props.itemid !== undefined && <PiBookmarkSimpleThin />}
 
         <p>{props.likes}</p>
         <FaRegEye />
-        <p>{props.watch}</p>
+        {props.itemid === undefined && <p>{props.views}</p>}
+        {props.itemid !== undefined && <p>{props.view}</p>}
       </div>
     </div>
   );

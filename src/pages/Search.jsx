@@ -8,38 +8,56 @@ import ScrollToTop from "utils/ScrollToTop";
 import { useEffect, useState } from "react";
 import useUserInfo from "hooks/LoginHooks/useUserInfo";
 import axios from "axios";
-const ListPets = () => {
+import { useLocation } from "react-router-dom";
+
+const Search = () => {
+  const location = useLocation();
+  const keyword = location.state;
   const [page, setPage] = useState();
   const user = useUserInfo();
   const [list, setList] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const getList = async () => {
     try {
-      const res = await axios.get(`/api/bestPetsBoard`, {
-        params: { pageNum: currentPage },
+      let mergedList = []; // 빈 배열로 초기화
+      console.log(keyword);
+      const res = await axios.get(`/api/bestReviewsBoardSearch`, {
+        params: { keyword: keyword },
       });
-      if (res.status === 200) setList(res.data);
-    } catch (e) {
-      console.log(e);
+      console.log(res);
+      if (res.status === 200) {
+        mergedList = [...mergedList, ...res.data]; // 데이터 추가
+        const res2 = await axios.get(
+          `/api/api/bestPetsBoardSearch/${encodeURIComponent(keyword)}`
+        );
+        if (res2.status === 200) {
+          const res3 = await axios.get(`/api/bestReviewsItemSearch/${keyword}`);
+          if (res3.status === 200) {
+            mergedList = [...mergedList, ...res3.data]; // 데이터 추가
+            const res4 = await axios.get(
+              `/api/bestReviewsItemMatchingPost/${keyword}`
+            );
+            if (res4.status === 200) {
+              const res5 = await axios.get(`/api/bestPetsBoardSearch`, {
+                param: { content: keyword },
+              });
+              if (res5.status === 200) {
+                mergedList = [...mergedList, ...res5.data]; // 데이터 추가
+              }
+            }
+          }
+        }
+      }
+
+      setList(mergedList);
+    } catch (error) {
+      console.log(error);
     }
   };
   useEffect(() => {
-    const getPage = async () => {
-      try {
-        const res = await axios.get(`/api/bestPetsTotalPages`);
-        console.log(res);
-        if (res.status === 200) setPage(res.data.end);
-        else console.log("error 발생");
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    getPage();
     getList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (page === null || user === null || list === null) return null;
   return (
     <div>
       <ScrollToTop />
@@ -69,4 +87,4 @@ const ListPets = () => {
     </div>
   );
 };
-export default ListPets;
+export default Search;

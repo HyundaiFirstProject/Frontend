@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 const LoginCallback = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const searchParams = new URLSearchParams(url.search);
-    const token = searchParams.get("accesstoken");
-    localStorage.setItem("accesstoken", token);
+    localStorage.setItem("isLoged", true);
     navigate("/");
   }, [navigate]);
   return null;

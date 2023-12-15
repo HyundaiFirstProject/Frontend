@@ -61,6 +61,7 @@
 
 #comment_div{
   margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(30, 157, 130, 0.445) ;
 }
 
 #comment_div .useIMGCOMM_bottom{
@@ -72,11 +73,15 @@
   position: absolute;
   right: 0;
   border:none;
-  background-color:  rgba(30, 157, 130, 0.445) ;
+  background-color:  rgba(143, 143, 143, 0.445) ;
   border-radius: 0.25rem;
   color: white;
   width: 3rem;
   height: 2rem;
+}
+#comment_div .useIMGCOMM_bottom  #button2_comment{
+  background-color:  rgba(30, 157, 130, 0.445) ;
+  right: 3.5rem;
 }
 #comment_div .useIMGCOMM_bottom p{
   margin: 0;
@@ -86,8 +91,8 @@
   line-height: 1.75rem;
 }
 #comment_div .useIMGCOMM_bottom2{
-  padding-left: 4.5rem;
-  margin-top:-1rem;
+  padding-left: 1.1rem;
+    margin-top: 0rem;
 }
 #comment_div .useIMGCOMM_bottom2 .comment_likes_P{
   font-size: 1.2rem;

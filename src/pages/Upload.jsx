@@ -12,7 +12,7 @@ import ItemInfo from "components/Posting/ItemInfo";
 import ScrollToTop from "utils/ScrollToTop";
 import Rating from "@mui/material/Rating";
 import ReactQuill from "react-quill";
-//import axios from "axios";
+import axios from "axios";
 
 const Upload = () => {
   const location = useLocation();
@@ -20,13 +20,12 @@ const Upload = () => {
   const imgRef_up = useRef(null);
   const quillRef = useRef();
   const [imgList, setImgList] = useState([]);
+  const [fileList, setFileList] = useState([]);
   const [postInfo, setPostInfo] = useState({
-    id: 0,
     title: "",
     content: "",
     type: "",
-    star: 0,
-    prod: "",
+    stars: 0,
   });
   const [prevContent, setPrevContent] = useState(postInfo.content);
   const imageHandler = useCallback(() => {
@@ -37,18 +36,16 @@ const Upload = () => {
     input.addEventListener("change", async () => {
       const file = input.files[0];
       const formData = new FormData();
-      formData.append("img", file);
-      console.log(file);
-      // try {
-      //   const result = await axios.post("", formData);
-      //   console.log("성공 시", result.data.url);
-      //   const IMG_URL = result.data.url;
-      //   const editor = quillRef.current.getEditor();
-      //   const range = editor.getSelection();
-      //   editor.insertEmbed(range.index, "image", IMG_URL);
-      // } catch (error) {
-      //   console.log("실패");
-      // }
+      formData.append("file", file);
+      try {
+        const result = await axios.post("/api/singleImg", formData);
+        const IMG_URL = result.data;
+        const editor = quillRef.current.getEditor();
+        const range = editor.getSelection();
+        editor.insertEmbed(range.index, "image", IMG_URL);
+      } catch (error) {
+        console.log("실패");
+      }
     });
   }, []);
   const modules = {
@@ -76,13 +73,20 @@ const Upload = () => {
       location.state !== "upload-review" &&
       location.state !== "upload-pets"
     ) {
+      console.log(location.state);
       setPostInfo((prev) => ({
         ...prev,
-        id: location.state.postInfo.id,
         title: location.state.postInfo.title,
         content: location.state.postInfo.content,
       }));
-      setImgList(location.state.postInfo.img);
+      if (location.state.postInfo.photo !== undefined) {
+        setFileList(location.state.postInfo.photo);
+        setImgList(location.state.postInfo.photo);
+      }
+      if (location.state.postInfo.photo === undefined) {
+        setFileList(location.state.postInfo.img);
+        setImgList(location.state.postInfo.img);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -92,16 +96,38 @@ const Upload = () => {
       imgRef_up.current.focus(); // 파일 인풋에 포커스
     }
   };
-  const handleImageUpload = () => {
+  const handleImageUpload = async () => {
     const tmpfiles = imgRef_up.current.files;
-    if (tmpfiles.length > 5 || imgList.length + tmpfiles.length > 5) {
-      setModal("open");
-    } else uploadImages(tmpfiles, imgList, setImgList);
+    uploadImages(tmpfiles, imgList, setImgList);
+
+    for (const item of tmpfiles) {
+      const formData = new FormData();
+      formData.append("file", item);
+
+      try {
+        const result = await axios.post("/api/singleImg", formData);
+        const IMG_URL = result.data;
+        console.log(result);
+        setFileList((pre) => [...pre, IMG_URL]);
+      } catch (error) {
+        console.log("실패");
+      }
+    }
+    // if (tmpfiles.length > 5 || imgList.length + tmpfiles.length > 5) {
+    //   setModal("open");
+    // } else {
+    //   uploadImages(tmpfiles, imgList, setImgList);
+    //   const newFileList = [...fileList, ...tmpfiles];
+    //   setFileList(newFileList);
+    // }
   };
   const deleteIMG = (index) => {
     const updatedList = [...imgList];
     updatedList.splice(index, 1); // 해당 인덱스 요소 삭제
     setImgList(updatedList);
+    const updatedListFile = [...fileList];
+    updatedListFile.splice(index, 1); // 해당 인덱스 요소 삭제
+    setFileList(updatedListFile);
     document.getElementById("fileInput").value = ""; //삭제한 이미지 재 업로드 가능하도록 브라우저의 보안 정책 우회
   };
   const setValue = (value, target) => {
@@ -117,7 +143,12 @@ const Upload = () => {
   return (
     <div className="Upload">
       <ScrollToTop />
-      <HeaderUpload props={postInfo} img={imgList} />
+      <HeaderUpload
+        props={postInfo}
+        file={fileList}
+        img={imgList}
+        state={location.state}
+      />
       <div>
         <label className="title_input_label" htmlFor="title">
           <input
@@ -130,21 +161,24 @@ const Upload = () => {
         </label>
 
         <div className="UploadContainer">
-          {location.state === "upload-review" && (
-            <ItemInfo
-              onCheck={(prod) =>
-                setPostInfo((prev) => ({
-                  ...prev,
-                  prod: prod,
-                }))
-              }
-            />
-          )}
-          {location.state === "upload-pets" && (
-            <TypeRadio
-              TypeCheck={(selectedType) => setValue(selectedType, "type")}
-            />
-          )}
+          {location.state === "upload-review" ||
+            (location.state.postInfo.itemid !== undefined && (
+              <ItemInfo
+                onCheck={(prod) =>
+                  setPostInfo((prev) => ({
+                    ...prev,
+                    itemid: prod,
+                  }))
+                }
+              />
+            ))}
+          {location.state !== "upload-review" &&
+            (location.state === "upload-pets" ||
+              location.state.postInfo.pettype !== undefined) && (
+              <TypeRadio
+                TypeCheck={(selectedType) => setValue(selectedType, "pettype")}
+              />
+            )}
           <div className="imageSection">
             <MainImg props={imgList} onCallClick={handleIconClick} />
             <div
@@ -172,26 +206,27 @@ const Upload = () => {
               </div>
             </div>
           </div>
-          {location.state === "upload-review" && (
-            <div className="Rating_up">
-              <p>별점</p>
-              <Rating
-                precision={0.5}
-                value={postInfo.star}
-                onChange={(event, newValue) => {
-                  setPostInfo((prev) => ({
-                    ...prev,
-                    star: newValue,
-                  }));
-                }}
-              />
-              <p>
-                {Number.isInteger(postInfo.star)
-                  ? postInfo.star.toFixed(1)
-                  : postInfo.star}
-              </p>
-            </div>
-          )}
+          {location.state === "upload-review" ||
+            (location.state.postInfo.itemid !== undefined && (
+              <div className="Rating_up">
+                <p>별점</p>
+                <Rating
+                  precision={0.5}
+                  value={postInfo.stars}
+                  onChange={(event, newValue) => {
+                    setPostInfo((prev) => ({
+                      ...prev,
+                      stars: newValue,
+                    }));
+                  }}
+                />
+                <p>
+                  {Number.isInteger(postInfo.stars)
+                    ? postInfo.stars.toFixed(1)
+                    : postInfo.stars}
+                </p>
+              </div>
+            ))}
           <ReactQuill
             ref={quillRef}
             className="Quill"
