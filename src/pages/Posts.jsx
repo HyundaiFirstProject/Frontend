@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "components/header/Header";
 import Footer from "components/footer/Footer";
 import ImgPosts from "components/Posting/ImgPosts";
-//import DateCheck from "utils/DateCheck";
+import DateCheck from "utils/DateCheck";
 import { itemList } from "index.js";
 import "assets/CSS/Posts/Posts.css";
 import UserIMG from "components/UserProfile/userIMG";
@@ -146,7 +146,7 @@ const Posts = () => {
           <UserIMG props={{ img_url: userInfo }} className="posting" />
           <div id="postInfouserInfo_text">
             <p>{postInfo.writer}</p>
-            {/* <div>{DateCheck(postInfo.updatedate)}</div> */}
+            <div>{DateCheck(postInfo.updatedate)}</div>
           </div>
         </div>
         {status === "list-review" && (

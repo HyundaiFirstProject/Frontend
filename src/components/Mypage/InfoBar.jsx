@@ -48,7 +48,7 @@ const InfoBar = () => {
       <p>{user.nickname}</p>
       <button
         onClick={() => {
-          navigate(`/profileupload/${user.no}`, { state: user });
+          navigate(`/profileupload/${user.user_no}`, { state: user });
         }}
       >
         설정

@@ -161,8 +161,9 @@ const Upload = () => {
         </label>
 
         <div className="UploadContainer">
-          {location.state === "upload-review" ||
-            (location.state.postInfo.itemid !== undefined && (
+          {location.state !== "upload-pets" &&
+            (location.state === "upload-review" ||
+              location.state.postInfo.itemid !== undefined) && (
               <ItemInfo
                 onCheck={(prod) =>
                   setPostInfo((prev) => ({
@@ -171,7 +172,7 @@ const Upload = () => {
                   }))
                 }
               />
-            ))}
+            )}
           {location.state !== "upload-review" &&
             (location.state === "upload-pets" ||
               location.state.postInfo.pettype !== undefined) && (
@@ -206,8 +207,9 @@ const Upload = () => {
               </div>
             </div>
           </div>
-          {location.state === "upload-review" ||
-            (location.state.postInfo.itemid !== undefined && (
+          {location.state !== "upload-pets" &&
+            (location.state === "upload-review" ||
+              location.state.postInfo.itemid !== undefined) && (
               <div className="Rating_up">
                 <p>별점</p>
                 <Rating
@@ -226,7 +228,7 @@ const Upload = () => {
                     : postInfo.stars}
                 </p>
               </div>
-            ))}
+            )}
           <ReactQuill
             ref={quillRef}
             className="Quill"

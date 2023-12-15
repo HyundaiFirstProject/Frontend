@@ -15,10 +15,8 @@ const ListPets = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const getList = async () => {
     try {
-      const res = await axios.get(`/api/bestPetsBoard`, {
-        params: { pageNum: currentPage },
-      });
-      if (res.status === 200) setList(res.data);
+      const res = await axios.get(`/api/bestPetsBoard`);
+      if (res.status === 200) setList(res.data.sort((a, b) => b.bno - a.bno));
     } catch (e) {
       console.log(e);
     }
