@@ -33,6 +33,7 @@ const Login = () => {
     try {
       const res = await postWithCredentials(`/api/login`, userInfo);
       if (res.status === "200") {
+        localStorage.setItem("isLoged", true);
         navigate("/callback");
       }
     } catch (error) {

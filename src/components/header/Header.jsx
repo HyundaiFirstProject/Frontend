@@ -20,10 +20,9 @@ const Header = () => {
   const seachClick = () => {
     navigate(`/search/${string}`, { state: string });
   };
-
-  let isLog = false;
-  if (localStorage.getItem("isLoged") === true) isLog = true;
-  //if (user === null) return null;
+  let isLog = localStorage.getItem("isLoged") === "true" ? true : false;
+  console.log(isLog);
+  if (user === null) return null;
   return (
     <div className=" header">
       <div className="Logo_Header">
