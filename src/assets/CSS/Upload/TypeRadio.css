@@ -33,7 +33,34 @@
   background-color: rgba(51, 133, 115, 0.3);
   border-radius: 1rem;
   padding-bottom: 2px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 1.5rem;
+  align-items: center;
+}
+.radioType #radioSVG{
+  position: relative;
+  margin-top: 0.15rem;
+}
+.radioType #radioP{
+  color: white;
+  margin: 0%;
 }
 #checked{
   background-color: rgba(51, 133, 115, 1);
+}
+#checkedDIv{
+  display: flex;
+  flex-direction: row;
+  color:rgba(0, 0, 0, 0.65);
+  height: 2rem;
+  align-items: center;
+}
+#checkedDIv p{
+  margin: 0;
+}
+#checkedDIv svg{
+  margin-top: 0.2rem;
+  margin-right: 0.2rem;
 }

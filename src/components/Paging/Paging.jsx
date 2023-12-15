@@ -3,7 +3,7 @@ import { FaAnglesLeft } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAnglesRight } from "react-icons/fa6";
-const Paging = ({ props, currentPage, className }) => {
+const Paging = ({ props, currentPage, className, onMove }) => {
   const PagingContainerClassName = `${className}_container`;
   let beforeLen = 2;
   let afterLen = 2;
@@ -35,21 +35,27 @@ const Paging = ({ props, currentPage, className }) => {
   return (
     <div className={PagingContainerClassName}>
       {props > 5 && currentPage > 3 && (
-        <button>
+        <button onClick={() => onMove(-(props + 1))}>
           <FaAnglesLeft />
         </button>
       )}
-      <button className="beforePaging">
+      <button
+        className="beforePaging"
+        onClick={() => onMove(currentPage === 1 ? 0 : -1)}
+      >
         <FaAngleLeft />
       </button>
       <div className={className}>{pageNumbersBefore}</div>
       <p>{currentPage}</p>
       <div className={className}>{pageNumbersAfter}</div>
-      <button className="afterPaging">
+      <button
+        className="afterPaging"
+        onClick={() => onMove(currentPage === props ? 0 : 1)}
+      >
         <FaAngleRight />
       </button>
       {props > 5 && props - currentPage > 2 && (
-        <button>
+        <button onClick={() => onMove(props)}>
           <FaAnglesRight />
         </button>
       )}

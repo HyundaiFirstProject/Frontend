@@ -12,6 +12,7 @@ import Posts from "pages/Posts";
 import ProfileUpload from "pages/ProfileUpload";
 import Withdrawal from "pages/Withdrawal";
 import FindPW from "pages/FindPW";
+import Search from "pages/Search";
 import LoginCallback from "pages/LoginCallback";
 const Routing = () => {
   return (
@@ -42,6 +43,7 @@ const Routing = () => {
         ></Route>
         <Route path="/withdrawal/:useNum" element={<Withdrawal />}></Route>
         <Route path="/findPW" element={<FindPW />}></Route>
+        <Route path="/search/:keyword" element={<Search />}></Route>
       </Routes>
     </BrowserRouter>
   );

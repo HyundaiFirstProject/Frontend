@@ -42,9 +42,22 @@ const AlertModal = ({ alertString, onClose }) => {
               .split(".")
               .map((sentence, index) => <p key={index}>{sentence}</p>)}
         </div>
-        {alertString !== "loading" && (
-          <button onClick={closeModal}>확인</button>
+        {alertString === "오류가 발생했습니다. 다시 시도해주세요" && (
+          <button
+            onClick={closeModal}
+            style={{
+              backgroundColor: "#39ab8585",
+              marginTop: "0rem",
+              fontSize: "0.75rem",
+            }}
+          >
+            확인
+          </button>
         )}
+        {alertString !== "loading" &&
+          alertString !== "오류가 발생했습니다. 다시 시도해주세요" && (
+            <button onClick={closeModal}>확인</button>
+          )}
       </div>
     </div>
   );

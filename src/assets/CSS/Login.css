@@ -82,6 +82,7 @@
 .bottomBTN{
   display: flex;
   flex-direction: row;
+  margin-top: 3rem;
 }
 .bottomBTN button{
   position: relative;
@@ -333,4 +334,35 @@
 .confirmBTN_email_dis_autho_findPW, .confirmBTN_email_autho_findPW{
   margin-top: 8rem;
 
+}
+
+.googleBTN{
+  position: relative;
+}
+.googleBTN .visibleGOOGLE{
+  border: 1px solid darkgrey;
+  border-radius: 0.25rem;
+  width: 21.9rem;
+  height: 2.8rem;
+  top: 0.2rem;
+  padding: 0;
+  object-fit: cover;
+  position: absolute;
+  line-height: 2.75rem;
+  left: -11rem;
+  opacity: 1;
+  font-size: 0.8rem;
+}
+.googleBTN .visibleGOOGLE svg{
+  position: absolute;
+  width: 2.1rem;
+  height: 2.1rem;
+  left: 0.35rem;
+  top: 0.35rem;
+}
+.googleBTN div{
+  top: 0.2rem;
+  opacity: 0;
+  position: absolute;
+  left: -4rem;
 }

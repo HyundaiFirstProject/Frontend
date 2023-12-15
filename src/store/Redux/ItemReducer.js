@@ -1,9 +1,7 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
-import dummy from "assets/dummyForTest/dummy_item.json";
-
 // 초기 상태 정의
 const initialState = {
-  items: dummy.items,
+  items: [],
   searchKeyword: "", // 검색어 상태 추가
 };
 
@@ -30,9 +28,9 @@ const store = configureStore({
 });
 
 // 검색어로 아이템 필터링하는 함수
-export const filterItemsByKeyword = (keyword) => {
+export const filterItemsByKeyword = (keyword, items) => {
   keyword = !keyword ? "" : keyword;
-  return dummy.items.filter(
+  return items.filter(
     (item) =>
       item.title &&
       typeof item.title === "string" &&

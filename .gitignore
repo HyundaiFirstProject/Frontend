@@ -23,3 +23,6 @@ yarn-error.log*
 
 ##맥
 .DS_Store
+
+#google id
+.env

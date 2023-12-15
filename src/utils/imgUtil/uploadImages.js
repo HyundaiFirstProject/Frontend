@@ -14,3 +14,21 @@ const uploadImages = (files, currentFiles, setFiles) => {
   }
 };
 export default uploadImages;
+/*
+
+input.addEventListener("change", async () => {
+      const file = input.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+      try {
+        const result = await axios.post("/api/singleImg", formData);
+        const IMG_URL = result.data;
+        const editor = quillRef.current.getEditor();
+        const range = editor.getSelection();
+        editor.insertEmbed(range.index, "image", IMG_URL);
+      } catch (error) {
+        console.log("실패");
+      }
+
+
+*/

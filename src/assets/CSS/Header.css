@@ -152,9 +152,21 @@
 
 .header .dropdown-content button{
   margin: auto;
+  line-height: 3.6rem;
   height: 3.6rem;
   width: 14.6rem;
   padding:0.2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.header .dropdown-content #starBTN svg{
+  color:rgb(202, 119, 0);
+}
+.header .dropdown-content #pawBTN svg{
+  color:rgb(30, 157, 130);
+  margin:0.25rem
 }
 .header .dropdown-invisible button{
   margin: auto;

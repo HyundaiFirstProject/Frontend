@@ -182,3 +182,6 @@
   object-fit: cover;
   border-radius: 0.25rem;
 }
+.invisibleButton{
+  visibility: hidden;
+}

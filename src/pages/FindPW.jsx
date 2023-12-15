@@ -3,9 +3,13 @@ import emailCheck from "utils/signUpUtils/emailCheck";
 import InputCSS from "components/SignUp/InputCSS";
 import AlertModal from "components/Modal/AlertModal";
 import EmailSend from "utils/signUpUtils/EmailSend";
+import EmailConfirm from "utils/signUpUtils/EmailConfirm";
 import pwConfirm from "utils/signUpUtils/pwConfirm";
+import usePost from "hooks/axiosWithCredentials/usePost";
+import { useNavigate } from "react-router-dom";
 import "assets/CSS/Login.css";
 const FindPW = () => {
+  const navigate = useNavigate();
   const [status, setStatus] = useState({
     email: "before",
     password_confirm: "before",
@@ -17,27 +21,33 @@ const FindPW = () => {
   const [emailAuthoNum, setEmailAuthoNum] = useState("");
   const [modal, setModal] = useState("close");
 
+  const { postWithCredentials } = usePost();
   const handleEmailConfirm = async (e) => {
     e.preventDefault();
-    const isNotDup = false;
-    //EmailConfirm(userInfo.email); //중복 확인 -> 있어야함! 없으면 안됨
-
     setModal("loading");
     if (status.email !== "인증번호O") {
-      if (!isNotDup) {
-        const rand = Math.floor(100000 + Math.random() * 900000);
-        setRandNum(rand);
-        try {
-          const isSended = await EmailSend(email, rand);
-          if (isSended) {
-            setStatus((prev) => ({ ...prev, email: "전송완료" }));
-            setModal("이메일 전송에 성공하였습니다. 인증번호를 입력해주세요.");
-          } else setModal("이메일 전송에 실패하였습니다. 다시 시도해주세요.");
-        } catch (error) {
-          console.error("Error sending email:", error);
-          setModal("이메일 전송 중 오류가 발생했습니다.");
-        }
-      } else setModal("해당 이메일은 회원 가입 이력이 없습니다.");
+      try {
+        const isNotDup = await EmailConfirm(email);
+        if (!isNotDup) {
+          const rand = Math.floor(100000 + Math.random() * 900000);
+          setRandNum(rand);
+          try {
+            const isSended = await EmailSend(email, rand);
+            if (isSended) {
+              setStatus((prev) => ({ ...prev, email: "전송완료" }));
+              setModal(
+                "이메일 전송에 성공하였습니다. 인증번호를 입력해주세요."
+              );
+            } else setModal("이메일 전송에 실패하였습니다. 다시 시도해주세요.");
+          } catch (error) {
+            console.error("Error sending email:", error);
+            setModal("이메일 검증 중 오류가 발생했습니다.");
+          }
+        } else setModal("해당 이메일은 회원 가입 이력이 없습니다.");
+      } catch (error) {
+        console.error("Error sending email:", error);
+        setModal("이메일 검증 중 오류가 발생했습니다.");
+      }
     } else setModal("이미 인증을 완료하셨습니다.");
   };
   const handleEmailAuthoConfirm = (e) => {
@@ -49,8 +59,22 @@ const FindPW = () => {
     }
   };
 
-  const handleChangePW = (e) => {
+  const handleChangePW = async (e) => {
     e.preventDefault();
+    try {
+      const res = await postWithCredentials(`/api/changePassword`, {
+        email: email,
+        password: password,
+      });
+      if (res === "success change pwd") {
+        setModal("변경완료 되었습니다.");
+        navigate("/");
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
   };
   return (
     <div className="container_findPW">

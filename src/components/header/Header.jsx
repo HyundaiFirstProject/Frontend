@@ -4,25 +4,26 @@ import { IoIosSearch } from "react-icons/io";
 import { FaAngleDown } from "react-icons/fa6";
 import UserIMG from "components/UserProfile/userIMG";
 import Logo from "assets/images/Logo.png";
+import { MdOutlinePets } from "react-icons/md";
 import React, { useState } from "react";
+import { GiRoundStar } from "react-icons/gi";
+import useUserInfo from "hooks/LoginHooks/useUserInfo";
 const Header = () => {
+  const user = useUserInfo();
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [string, setstring] = useState("");
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
   const seachClick = () => {
-    console.log("검색");
+    navigate(`/search/${string}`, { state: string });
   };
 
-  const user = {
-    no: 1,
-    img_url: "false",
-    //img_url:
-    //  "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
-  };
-  const isLog = true;
+  const isLog = localStorage.getItem("isLoged");
+
+  //if (user === null) return null;
   return (
     <div className=" header">
       <div className="Logo_Header">
@@ -43,15 +44,19 @@ const Header = () => {
           </button>
           <input
             placeholder="통합검색"
+            value={string}
+            onChange={(e) => {
+              setstring(e.target.value);
+            }}
             onKeyPress={(e) => {
               e.key === "Enter" && seachClick(); //엔터키 검색 등록
             }}
           />
         </label>
       </div>
-      {isLog && (
+      {isLog && user !== null && (
         <div className="WhenLogIn">
-          <button onClick={() => navigate("/mypage")}>
+          <button onClick={() => navigate("/mypage", { state: user.user_no })}>
             <UserIMG props={user} className="userIcon" />
           </button>
           <div className="writeBTNcontainer">
@@ -70,18 +75,22 @@ const Header = () => {
               }
             >
               <button
+                id="starBTN"
                 onClick={() =>
                   navigate("/upload/review", { state: "upload-review" })
                 }
               >
-                🌟 THEPET 제품후기 작성하기 🌟
+                <GiRoundStar />
+                <p> THEPET 제품후기 작성하기</p> <GiRoundStar />
               </button>
               <button
+                id="pawBTN"
                 onClick={() =>
                   navigate("/upload/pets", { state: "upload-pets" })
                 }
               >
-                🐾 우리집 반려동물 자랑하기 🐾
+                <MdOutlinePets /> <p> 우리집 반려동물 자랑하기</p>{" "}
+                <MdOutlinePets />
               </button>
             </div>
           </div>

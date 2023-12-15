@@ -1,22 +1,18 @@
 import usePost from "hooks/axiosWithCredentials/usePost";
-const EmailConfirm = (props) => {
+const EmailConfirm = async (props) => {
   const { postWithCredentials } = usePost();
   const useEmail = { email: props };
-  //return true;
-  const emailConfirm = async () => {
-    console.log(`/api/checkEmail`, useEmail);
-    try {
-      const res = await postWithCredentials(`/api/checkEmail`, useEmail);
-      console.log(res); // 응답 데이터 사용
-      if (res.status === 200) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
+  console.log(props);
+  try {
+    const res = await postWithCredentials(`/api/checkEmail`, useEmail);
+    console.log(res);
+    if (res.status === 200) {
+      return res.checkEmail;
+    } else {
       return false;
     }
-  };
-  emailConfirm();
+  } catch (error) {
+    return false;
+  }
 };
 export default EmailConfirm;

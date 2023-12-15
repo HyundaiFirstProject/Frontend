@@ -1,61 +1,43 @@
-import { /*useLocation*/ useNavigate } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
 import Header from "components/header/Header";
 import Footer from "components/footer/Footer";
-//import useGet from "hooks/axiosWithCredentials/useGet";
 import "assets/CSS/Mypage/ProfileUpload.css";
 import UserIMG from "components/UserProfile/userIMG";
 import NicknameConfirm from "utils/signUpUtils/NicknameConfirm";
 import { BiImageAdd } from "react-icons/bi";
-import { MdDeleteForever } from "react-icons/md";
+// import { MdDeleteForever } from "react-icons/md";
 import ScrollToTop from "utils/ScrollToTop";
+import AlertModal from "components/Modal/AlertModal";
+import axios from "axios";
 const ProfileUpload = () => {
-  //const location = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
   const [nicknamePossible, setNickNamePossible] = useState("before");
-  const [user, setUser] = useState({
-    user_no: 101,
-    email: "user1@example.com",
-    password: "password1",
-    nickname: "User1",
-    img_url:
-      "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
-  });
+  const [user, setUser] = useState(location.state);
   const beforeNicknameRef = useRef(user.nickname);
   const imgRef_up = useRef(null);
-  //const { getWithCredentials } = useGet();
-  useEffect(() => {
-    beforeNicknameRef.current = user.nickname;
-    // const useNo = location.state;
-    // const params = { user_no: useNo };
-    // const fetchDataWithParams = async () => {
-    //   try {
-    //     const res = await getWithCredentials(`/api/getUserInfo`, params); //매개변수 O
-    //     console.log(res); // 응답 데이터 사용
-    //beforeNicknameRef.current = res.data.nickname;
-    //   } catch (error) {
-    //     // 에러 처리
-    //   }
-    // };
-    // fetchDataWithParams();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [modal, setModal] = useState("close");
+  const [file, setFile] = useState();
+  const formData = new FormData();
   const handleIconClick = () => {
     if (imgRef_up.current) {
       imgRef_up.current.click(); // 파일 인풋 클릭
       imgRef_up.current.focus(); // 파일 인풋에 포커스
     }
   };
-  const deleteIMG = () => {
-    setUser((pre) => ({ ...pre, img_url: "false" }));
-  };
+  // const deleteIMG = () => {
+  //   setUser((pre) => ({ ...pre, img_url: null }));
+  // };
   const handleNicknameConfirm = async (e) => {
     e.preventDefault();
     try {
       const nicknamePossible = await NicknameConfirm(user.nickname);
       setNickNamePossible(nicknamePossible);
+      if (nicknamePossible) setModal("변경 가능한 닉네임입니다.");
       if (!nicknamePossible) {
         //안된다는 모달창
+        setModal("중복된 닉네임입니다.");
         setUser((pre) => ({ ...pre, nickname: "" }));
       }
     } catch (error) {
@@ -64,27 +46,56 @@ const ProfileUpload = () => {
   };
   const imgUpload = async (event) => {
     const file = imgRef_up.current.files[0];
+    setFile(file);
     const reader = new FileReader();
-    reader.readAsDataURL(file);
     reader.onloadend = () => {
       setUser((pre) => ({ ...pre, img_url: reader.result }));
     };
+
+    reader.readAsDataURL(file);
   };
-  const MypageUploadSubmit = () => {};
+
+  const MypageUploadSubmit = async () => {
+    formData.append("file", file);
+    formData.append("user_no", parseInt(user.user_no));
+    formData.append("nickname", user.nickname);
+
+    try {
+      const token = localStorage.getItem("accesstoken");
+      const response = await axios.post(`/api/user/modifyUserInfo`, formData, {
+        withCredentials: true, // 쿠키를 헤더에 포함
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "multipart/form-data", // multipart/form-data 헤더 추가
+        },
+      });
+      console.log(response);
+      if (response.status === 200) {
+        navigate("/mypage");
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  };
   return (
     <div>
+      {modal !== "close" && (
+        <AlertModal alertString={modal} onClose={() => setModal("close")} />
+      )}
       <ScrollToTop />
       <Header />
       <div id="ProfileUpload">
         <p id="ProfileUpload_title">회원정보수정</p>
-        <button
+        {/* <button
           id="deleteUser"
           onClick={() => {
             navigate(`/withdrawal/${user.user_no}`, { state: user.email });
           }}
         >
           탈퇴하기
-        </button>
+        </button> */}
         <div id="userInfo_Div">
           <p>이메일</p>
           <div>{user.email}</div>
@@ -123,10 +134,10 @@ const ProfileUpload = () => {
 
           <div>
             <label className="img_input_label_mypage" htmlFor="img">
-              <button className="profile_input" onClick={deleteIMG}>
+              {/* <button className="profile_input" onClick={deleteIMG}>
                 <MdDeleteForever />
                 <div>삭제</div>
-              </button>
+              </button> */}
               <button className="profile_input2" onClick={handleIconClick}>
                 <BiImageAdd />
               </button>

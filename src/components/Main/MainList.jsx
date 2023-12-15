@@ -1,40 +1,93 @@
 import React from "react";
 import "assets/CSS/Main/MainList.css";
-//import { GoHeartFill } from "react-icons/go";
 import truncateText from "utils/truncateText";
-import { IoHeart } from "react-icons/io5";
-import { PiBookmarkSimpleFill } from "react-icons/pi";
+import { LuBird, LuDog, LuRat } from "react-icons/lu";
+import { PiFishSimple, PiCat } from "react-icons/pi";
+import { VscSnake } from "react-icons/vsc";
+import { MdOutlinePets } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 const MainList = ({ props }) => {
+  const navigate = useNavigate();
+  console.log(props);
+
   return (
     <div className="list-container">
       {props.map((item, index) => (
-        <button className="listItem" key={index}>
+        <button
+          className="listItem"
+          key={index}
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(
+              props[0].itemid !== undefined
+                ? `/list-review/posts/main/${item.postid}`
+                : `/list-pets/posts/main/${item.bno}`,
+              { state: item }
+            );
+          }}
+        >
           <div className="image-container">
-            <img src={item.img} alt={item.title} />
+            {item.img && item.img.length > 0 && (
+              <img src={item.img[0]} alt="review" />
+            )}
+            {item.photo && item.photo.length > 0 && (
+              <img src={item.photo[0]} alt="review" />
+            )}
           </div>
           <div className="item_info">
             {item.product === undefined && (
               <div className="item_subtitle">
-                {item.type === "cat" && <p> 🐱고양이 </p>}
-                {item.type === "dog" && <p>🐶강아지 </p>}
-                {item.type === "bird" && <p>🐥새 </p>}
-                {item.type === "fish" && <p> 🐟물고기 </p>}
-                {item.type === "설치류" && <p> 🐹설치·토끼류 </p>}
-                {item.type === "파충류/양서류" && <p>🦖파충류·양서류 </p>}
-                {item.type === "기타" && <p>🐉기타동물 </p>}
+                {item.pettype === "cat" && (
+                  <p>
+                    <PiCat />
+                    고양이
+                  </p>
+                )}
+                {item.pettype === "dog" && (
+                  <p>
+                    <LuDog />
+                    강아지
+                  </p>
+                )}
+                {item.pettype === "bird" && (
+                  <p>
+                    <LuBird />새
+                  </p>
+                )}
+                {item.pettype === "fish" && (
+                  <p>
+                    <PiFishSimple />
+                    물고기
+                  </p>
+                )}
+                {item.pettype === "설치류" && (
+                  <p>
+                    <LuRat />
+                    설치
+                    <br />
+                    토끼류
+                  </p>
+                )}
+                {item.pettype === "파충류/양서류" && (
+                  <p>
+                    <VscSnake />
+                    파충류
+                    <br />
+                    양서류
+                  </p>
+                )}
+                {item.pettype === "기타" && (
+                  <p>
+                    <MdOutlinePets />
+                    기타동물
+                  </p>
+                )}
               </div>
             )}
-            {item.product !== undefined && (
-              <p className="item_subtitle">⭐️{item.star}</p>
+            {item.itemid !== undefined && (
+              <p className="item_subtitle">⭐️{item.stars}</p>
             )}
             <p className="item_title">{truncateText(item.title, 20)}</p>
-            <div className="item_like">
-              {item.product === undefined && <IoHeart className="heart" />}
-              {item.product !== undefined && (
-                <PiBookmarkSimpleFill className="heart" />
-              )}
-              <div className="number_liked">{/* <p>{item.likes}</p> */}</div>
-            </div>
           </div>
         </button>
       ))}

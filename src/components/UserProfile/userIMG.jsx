@@ -6,12 +6,12 @@ const UserIMG = ({ props, className }) => {
   const userIMGClassName = `${className}_container`;
   return (
     <div className={userIMGClassName}>
-      {props.img_url === "false" && (
+      {props.img_url === null && (
         <div className={className}>
           <FaUser />
         </div>
       )}
-      {!(props.img_url === "false") && (
+      {!(props.img_url === null) && (
         <div className={className}>
           <img alt="profile" src={props.img_url} className={className} />
         </div>

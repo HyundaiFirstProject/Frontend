@@ -4,15 +4,46 @@ import Header from "components/header/Header";
 import Footer from "components/footer/Footer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 const Withdrawal = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const userEmail = location.state;
+  console.log(userEmail);
   const [useEmailInput, setUserEmailInput] = useState("");
   const [confirmWIthdrawal, setConfirmWIthdrawal] = useState(false);
-  const handleWithdrawal = () => {
+  const deleteAllCookiesForDomain = (domain) => {
+    const cookies = document.cookie.split(";");
+
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i];
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie =
+        name +
+        "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=" +
+        domain +
+        ";path=/";
+    }
+  };
+  const handleWithdrawal = async () => {
     //탈퇴처리
-    navigate("/");
+    try {
+      const response = await axios.delete(`/api/user/withdrawal/${userEmail}`, {
+        withCredentials: true,
+        data: {
+          id: location.state,
+        },
+      });
+      console.log("User deleted:", response.data);
+      if (response) {
+        localStorage.clear();
+        deleteAllCookiesForDomain("localhost:3000");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
   };
   return (
     <div>

@@ -3,12 +3,19 @@ import UserIMG from "components/UserProfile/userIMG";
 import "assets/CSS/Posts/Comments.css";
 import { PiHeartThin } from "react-icons/pi";
 import { PiHeartFill } from "react-icons/pi";
-import DateCheck from "utils/DateCheck";
-const Comments = React.forwardRef(({ props }, ref) => {
+//import DateCheck from "utils/DateCheck";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import useUserInfo from "hooks/LoginHooks/useUserInfo";
+const Comments = React.forwardRef(({ props, status }, ref) => {
+  const { postID } = useParams();
   //postid로 댓글 가져오기
   //해당 댓글 내가 좋아요 했늕지 안했는지 가져오기
+  const user = useUserInfo();
   const [heart, setHeart] = useState(false);
-  const [comment, setComment] = useState([]);
+  const [comment, setComment] = useState();
+  const [modify, seModify] = useState("");
+  const [isEditing, setIsEditing] = useState([]);
   const [newComment, setNewComment] = useState("");
   const handleInputChange = (e) => {
     const text = e.target.value;
@@ -21,41 +28,126 @@ const Comments = React.forwardRef(({ props }, ref) => {
       setNewComment(text); // 50글자보다 작은 경우, 원본 문자열 설정
     }
   };
-  useEffect(() => {
-    setComment([
-      {
-        rno: 4,
-        writer: "댓글쓴사람",
-        reply: "댓글내",
-        regdate: "2023-12-10-18-57",
-        updatedate: "2023-12-10-18-57",
-        likes: 20,
-        postid: 21,
-      },
-      {
-        rno: 4,
-        writer: "댓글쓴사람",
-        reply: "~~~~~~~",
-        regdate: "2023-12-10-18-57",
-        updatedate: "2023-12-10-18-57",
-        likes: 20,
-        postid: 21,
-      },
-      {
-        rno: 4,
-        writer: "댓글쓴사람",
-        reply: "~~~~~~~",
-        regdate: "2023-12-10-18-57",
-        updatedate: "2023-12-09-18-57",
-        likes: 20,
-        postid: 21,
-      },
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const uploadComment = (e) => {
-    console.log(newComment);
+
+  const getComment = async () => {
+    if (status === "list-pets") {
+      try {
+        const res = await axios.get(`/api/bestPetsComments/${props}`);
+        if (res.status === 200) {
+          setComment(res.data);
+          setIsEditing(Array(res.data.length).fill(false));
+        }
+        console.log(res);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const res = await axios.get(`/api/bestReviewsComments/${postID}`);
+        if (res.status === 200) {
+          setComment(res.data);
+          setIsEditing(Array(res.data.length).fill(false));
+        }
+        console.log(res);
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
+
+  useEffect(() => {
+    getComment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props]);
+
+  const uploadComment = async (e) => {
+    if (status === "list-pets") {
+      try {
+        const res = await axios.post(`/api/bestPetsCommentsUpload`, {
+          writer: user.nickname,
+          reply: newComment,
+          bno: props,
+        });
+        if (res.status === 200) {
+          getComment();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const res = await axios.post(`/api/bestReviewsCommentsUpload`, {
+          writer: user.nickname,
+          reply: newComment,
+          postid: props,
+        });
+        if (res.status === 200) {
+          getComment();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  const deleteComment = async (rno) => {
+    if (status === "list-pets") {
+      try {
+        const res = await axios.delete(`/api/bestPetsCommentsDelete/${rno}`);
+        if (res.status === 200) {
+          getComment();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const res = await axios.delete(`/api/bestReviewsCommentsDelete/${rno}`);
+        if (res.status === 200) {
+          getComment();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  const modifyComment = async (rno) => {
+    if (status === "list-pets") {
+      try {
+        const res = await axios.post(`/api/bestPetsCommentsUpdate`, {
+          reply: modify,
+          rno: rno,
+        });
+        console.log(res);
+        if (res.status === 200) {
+          seModify("");
+          getComment();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const res = await axios.post(`/api/bestReviewsCommentsUpdate`, {
+          reply: modify,
+          rno: rno,
+        });
+        console.log(res);
+        if (res.status === 200) {
+          seModify("");
+          getComment();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  if (user === null) return null;
+  if (comment === null || comment === undefined) return null;
+  if (props === undefined) return null;
+
   return (
     <div id="Comments" ref={ref}>
       <div id="numOfComm">
@@ -70,15 +162,7 @@ const Comments = React.forwardRef(({ props }, ref) => {
           }}
         >
           <div className="useIMGCOMM">
-            <UserIMG
-              props={{
-                no: 1,
-                //img_url: "false",
-                img_url:
-                  "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
-              }}
-              className="userIcon_comment"
-            />
+            <UserIMG props={user} className="userIcon_comment" />
           </div>
           <textarea
             style={{
@@ -100,22 +184,52 @@ const Comments = React.forwardRef(({ props }, ref) => {
         {comment.map((com, idx) => (
           <div key={idx} id="comment_div">
             <div className="useIMGCOMM_bottom">
-              <UserIMG
-                props={{
-                  no: 1,
-                  //img_url: "false",
-                  img_url:
-                    "https://harpersbazaar.com.au/wp-content/uploads/2023/10/Press-Image-under-embargo-until-3pm-AEDT-Friday.jpg",
-                }}
-                className="userIcon_comment"
-              />
               <p>{com.writer}</p>
-              <button>삭제</button>
+              <button onClick={() => deleteComment(com.rno)}>삭제</button>
+              <button
+                id="button2_comment"
+                onClick={() => {
+                  const newIsEditing = [...isEditing];
+                  newIsEditing[idx] = true;
+                  setIsEditing(newIsEditing);
+                }}
+              >
+                수정
+              </button>
+              {isEditing[idx] && (
+                <div>
+                  <input
+                    style={{
+                      width: "27rem",
+                      height: `2rem`,
+                      position: "absolute",
+                      top: "-0.15rem",
+                      left: "10rem",
+                    }}
+                    placeholder="수정할 내용을 입력해주세요"
+                    value={modify}
+                    onChange={(e) => {
+                      seModify(e.target.value);
+                    }}
+                  />
+                  <button
+                    style={{ right: "7.7rem" }}
+                    onClick={() => {
+                      const newIsEditing = [...isEditing];
+                      newIsEditing[idx] = false;
+                      setIsEditing(newIsEditing);
+                      modifyComment(com.rno);
+                    }}
+                  >
+                    확인
+                  </button>
+                </div>
+              )}
             </div>
             <div className="useIMGCOMM_bottom2">
               <p className="comment_likes_P">{com.reply}</p>
               <div className="comment_likes">
-                <div>{DateCheck(com.updatedate)}</div>
+                {/* <div>{DateCheck(com.updatedate)}</div> */}
                 {heart && (
                   <PiHeartThin
                     className="heart-thin-animation2"
