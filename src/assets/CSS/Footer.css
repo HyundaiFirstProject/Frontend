@@ -8,6 +8,7 @@
   color: grey;
   font-size: 0.5rem;
   overflow-x: hidden !important; 
+  position: fixed;
 }
 
 .FooterDiv{
